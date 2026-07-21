@@ -35,11 +35,15 @@ jobs:
       - name: Re-vendor skills at their (possibly bumped) pins
         run: bun scripts/external-skills.ts sync --all --write
 
-      - name: Open a pull request with any changes
+      # Fixed branch name + branch-suffix: none means a still-open PR from a
+      # previous run gets overwritten with this run's diff instead of a new
+      # PR being opened alongside it.
+      - name: Open or update the pull request with this run's changes
         uses: peter-evans/create-pull-request@v8.1.1
         with:
           commit-message: "chore: sync external skills"
           title: "chore: sync external skills"
           body-path: ${{ steps.pr-body.outputs.path }}
           branch: chore/external-skills-sync
+          branch-suffix: none
           delete-branch: true
