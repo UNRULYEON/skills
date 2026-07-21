@@ -30,5 +30,4 @@ gh skill update --all
 
 1. `mkdir skills/<skill-name>` and copy `template/SKILL.md.template` there as `SKILL.md`, then fill it in (`name` must match the directory name).
 2. Validate it: `gh skill publish --dry-run`
-3. Commit and push.
-4. Tag a release when ready: `gh skill publish`
+3. Open a PR (`main` is protected — direct pushes aren't allowed) and merge once CI passes.
