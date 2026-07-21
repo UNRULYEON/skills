@@ -170,10 +170,34 @@ async function runSync(entries: RegistryEntry[], write: boolean): Promise<void> 
   if (failed) process.exitCode = 1;
 }
 
-async function bumpPins(entries: RegistryEntry[], write: boolean): Promise<void> {
+interface PinUpdate {
+  local_name: string;
+  upstream_repo: string;
+  from: string;
+  to: string;
+}
+
+function buildBumpPinsSummary(updates: PinUpdate[], write: boolean): string {
+  if (updates.length === 0) return "No upstream updates found — all pins are up to date.\n";
+
+  const verb = write ? "Bumped" : "Available";
+  const lines = updates.map(
+    (u) =>
+      `- **${u.local_name}** (${u.upstream_repo}): \`${short(u.from)}\` → \`${short(u.to)}\`\n  https://github.com/${u.upstream_repo}/compare/${u.from}...${u.to}`,
+  );
+
+  return `${verb} ${updates.length} pin${updates.length === 1 ? "" : "s"}:\n\n${lines.join("\n")}\n`;
+}
+
+async function bumpPins(
+  entries: RegistryEntry[],
+  write: boolean,
+  summaryPath?: string,
+): Promise<void> {
   const candidates = entries.filter((e) => e.update_policy === "latest");
   if (candidates.length === 0) {
     console.log(pc.dim("No entries with update_policy: latest."));
+    if (summaryPath) await Bun.write(summaryPath, buildBumpPinsSummary([], write));
     return;
   }
 
@@ -183,7 +207,7 @@ async function bumpPins(entries: RegistryEntry[], write: boolean): Promise<void>
     ),
   );
 
-  let updates = 0;
+  const updates: PinUpdate[] = [];
   for (const entry of candidates) {
     const spinner = ora({ text: entry.local_name, color: "cyan" }).start();
 
@@ -201,7 +225,12 @@ async function bumpPins(entries: RegistryEntry[], write: boolean): Promise<void>
       continue;
     }
 
-    updates += 1;
+    updates.push({
+      local_name: entry.local_name,
+      upstream_repo: entry.upstream_repo,
+      from: entry.pinned_ref,
+      to: latestSha,
+    });
     spinner.warn(
       `${pc.bold(entry.local_name)} ${pc.dim(short(entry.pinned_ref))} ${arrow} ${pc.green(short(latestSha))}`,
     );
@@ -220,15 +249,17 @@ async function bumpPins(entries: RegistryEntry[], write: boolean): Promise<void>
     }
   }
 
-  if (updates === 0) {
+  if (summaryPath) await Bun.write(summaryPath, buildBumpPinsSummary(updates, write));
+
+  if (updates.length === 0) {
     console.log(pc.green("\nAll pins up to date.\n"));
   } else if (write) {
-    console.log(pc.bold(`\n${updates} pin${updates === 1 ? "" : "s"} bumped.`));
+    console.log(pc.bold(`\n${updates.length} pin${updates.length === 1 ? "" : "s"} bumped.`));
     console.log(pc.dim("Run `sync --all --write` to vendor the bumped pins.\n"));
   } else {
     console.log(
       pc.dim(
-        `\n${updates} update${updates === 1 ? "" : "s"} available. Re-run with --write to apply.\n`,
+        `\n${updates.length} update${updates.length === 1 ? "" : "s"} available. Re-run with --write to apply.\n`,
       ),
     );
   }
@@ -451,9 +482,11 @@ async function promptText(message: string, defaultValue: string): Promise<string
 
 try {
   const [command, ...rest] = process.argv.slice(2);
-  const write = rest.includes("--write");
-  const all = rest.includes("--all");
-  const localName = rest.find((arg) => !arg.startsWith("--"));
+  const { positionals, flags } = parseFlags(rest);
+  const write = flags.write === true;
+  const all = flags.all === true;
+  const localName = positionals[0];
+  const summary = typeof flags.summary === "string" ? flags.summary : undefined;
 
   const entries = await loadRegistry();
 
@@ -469,7 +502,7 @@ try {
     }
     case "bump-pins": {
       const targets = localName || all ? resolveTargets(entries, localName, all) : entries;
-      await bumpPins(targets, write);
+      await bumpPins(targets, write, summary);
       break;
     }
     default: {
@@ -477,7 +510,7 @@ try {
   bun scripts/external-skills.ts add <owner/repo | github-url> [<upstream_path>] [--local-name X] [--provider X] [--owner X] [--pin <ref>] [--force] [--write]
   bun scripts/external-skills.ts sync <local_name> [--write]
   bun scripts/external-skills.ts sync --all [--write]
-  bun scripts/external-skills.ts bump-pins [<local_name> | --all] [--write]`);
+  bun scripts/external-skills.ts bump-pins [<local_name> | --all] [--write] [--summary <path>]`);
       process.exitCode = 1;
     }
   }

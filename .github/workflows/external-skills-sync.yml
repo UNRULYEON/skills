@@ -26,7 +26,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Check for upstream updates and bump pins
-        run: bun scripts/external-skills.ts bump-pins --write
+        run: bun scripts/external-skills.ts bump-pins --write --summary /tmp/pr-body.md
 
       - name: Re-vendor skills at their (possibly bumped) pins
         run: bun scripts/external-skills.ts sync --all --write
@@ -36,10 +36,6 @@ jobs:
         with:
           commit-message: "chore: sync external skills"
           title: "chore: sync external skills"
-          body: |
-            Automated weekly check for upstream skill updates
-            (`external-skills.ts bump-pins` + `sync --all`).
-
-            Review the diff — especially anything under `skills/` — before merging.
+          body-path: /tmp/pr-body.md
           branch: chore/external-skills-sync
           delete-branch: true
