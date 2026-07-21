@@ -1,0 +1,12 @@
+.DS_Store
+
+# bun
+node_modules/
+bun-debug.log*
+bun-error.log*
+.bun/
+
+# env
+.env
+.env.local
+.env.*.local

@@ -1,0 +1,20 @@
+# Registry of external skills vendored via this provider.
+# Do not edit vendored skill directories directly — edit this file and
+# re-run: bun scripts/external-skills.ts sync <local_name> --write
+
+provider: mattpocock
+skills:
+  - local_name: grilling
+    upstream_repo: mattpocock/skills
+    upstream_path: skills/productivity/grilling
+    pinned_ref: ed37663cc5fbef691ddfecd080dff42f7e7e350d
+    update_policy: latest
+    status: active
+    owner: amar
+  - local_name: writing-great-skills
+    upstream_repo: mattpocock/skills
+    upstream_path: skills/productivity/writing-great-skills
+    pinned_ref: ed37663cc5fbef691ddfecd080dff42f7e7e350d
+    update_policy: latest
+    status: active
+    owner: amar

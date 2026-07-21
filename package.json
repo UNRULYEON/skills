@@ -1,0 +1,24 @@
+{
+  "name": "skills",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check ."
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "ora": "^9.4.1",
+    "picocolors": "^1.1.1",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "oxfmt": "^0.59.0",
+    "oxlint": "^1.74.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
