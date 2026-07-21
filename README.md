@@ -2,6 +2,11 @@
 
 Personal collection of [agent skills](https://agentskills.io/specification).
 
+## Prerequisites
+
+- [GitHub CLI](https://cli.github.com) (`gh`), authenticated (`gh auth login`) — v2.90.0+ for the `gh skill` command (preview)
+- [Bun](https://bun.sh) — only needed to run `scripts/external-skills.ts` (adding/syncing/vendoring external skills), not for installing skills from this repo
+
 ## Installing a skill
 
 ```sh
