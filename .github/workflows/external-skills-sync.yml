@@ -1,0 +1,45 @@
+name: External skills sync
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check for upstream updates and bump pins
+        run: bun scripts/external-skills.ts bump-pins --write
+
+      - name: Re-vendor skills at their (possibly bumped) pins
+        run: bun scripts/external-skills.ts sync --all --write
+
+      - name: Open a pull request with any changes
+        uses: peter-evans/create-pull-request@v8.1.1
+        with:
+          commit-message: "chore: sync external skills"
+          title: "chore: sync external skills"
+          body: |
+            Automated weekly check for upstream skill updates
+            (`external-skills.ts bump-pins` + `sync --all`).
+
+            Review the diff — especially anything under `skills/` — before merging.
+          branch: chore/external-skills-sync
+          delete-branch: true
