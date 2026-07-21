@@ -25,6 +25,16 @@
     "TypeScript": {
       "format_on_save": "on",
       "prettier": { "allowed": false },
+      "language_servers": ["tsgo", "!vtsls", "!biome", "!eslint", "..."],
+      "formatter": [
+        { "language_server": { "name": "oxfmt" } },
+        { "code_action": "source.fixAll.oxc" }
+      ]
+    },
+    "TSX": {
+      "format_on_save": "on",
+      "prettier": { "allowed": false },
+      "language_servers": ["tsgo", "!vtsls", "!biome", "!eslint", "..."],
       "formatter": [
         { "language_server": { "name": "oxfmt" } },
         { "code_action": "source.fixAll.oxc" }
@@ -33,6 +43,7 @@
     "JavaScript": {
       "format_on_save": "on",
       "prettier": { "allowed": false },
+      "language_servers": ["!vtsls", "!biome", "!eslint", "..."],
       "formatter": [
         { "language_server": { "name": "oxfmt" } },
         { "code_action": "source.fixAll.oxc" }

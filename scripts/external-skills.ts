@@ -338,7 +338,7 @@ async function addEntry(rawArgs: string[]): Promise<void> {
     if (!interactive) throw new Error("Missing <owner/repo or GitHub URL>. See usage below.");
     const answer = await clack.text({
       message: "Upstream repo (owner/repo) or a GitHub skill URL",
-      validate: (v) => (v.trim() ? undefined : "Required"),
+      validate: (v) => (v?.trim() ? undefined : "Required"),
     });
     if (clack.isCancel(answer)) throw new Error("Cancelled.");
     const parsed = parseGithubSkillUrl(answer);
@@ -351,7 +351,7 @@ async function addEntry(rawArgs: string[]): Promise<void> {
     if (!interactive) throw new Error("Missing <upstream_path>. See usage below.");
     const answer = await clack.text({
       message: `Path within ${repo} (e.g. skills/productivity/grilling)`,
-      validate: (v) => (v.trim() ? undefined : "Required"),
+      validate: (v) => (v?.trim() ? undefined : "Required"),
     });
     if (clack.isCancel(answer)) throw new Error("Cancelled.");
     path = answer.trim();

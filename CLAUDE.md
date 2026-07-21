@@ -1,1 +1,3 @@
-Always use Conventional Commits format for commit messages.
+- always use Conventional Commits format for commit messages
+- use `kebab-case` for all file and folder names
+- prefer `function` over `const` for functions
