@@ -28,7 +28,7 @@ gh skill update --all
 
 ## Adding/updating a new skill
 
-1. Copy `template/` to `skills/<skill-name>/` and fill in `SKILL.md` (`name` must match the directory name).
+1. `mkdir skills/<skill-name>` and copy `template/SKILL.md.template` there as `SKILL.md`, then fill it in (`name` must match the directory name).
 2. Validate it: `gh skill publish --dry-run`
 3. Commit and push.
 4. Tag a release when ready: `gh skill publish`
