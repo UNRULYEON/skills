@@ -11,3 +11,10 @@ skills:
     update_policy: latest
     status: active
     owner: amar
+  - local_name: transitions-polish
+    upstream_repo: Jakubantalik/transitions.dev
+    upstream_path: skills/transitions-polish
+    pinned_ref: 047d036a79cc2ddecd868e7f1e3aa04b495644b2
+    update_policy: latest
+    status: active
+    owner: amar
