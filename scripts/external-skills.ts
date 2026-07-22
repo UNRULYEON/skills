@@ -85,6 +85,23 @@ async function fetchUpstreamDir(
   return join(workDir, extractedRootName, entry.upstream_path);
 }
 
+/** Rewrites SKILL.md's `name:` frontmatter field to match the registry's local_name. */
+async function normalizeSkillName(destPath: string, localName: string): Promise<void> {
+  const skillMdPath = join(destPath, "SKILL.md");
+  const raw = await readFile(skillMdPath, "utf-8");
+
+  const frontmatterMatch = raw.match(/^---\n([\s\S]*?)\n---\n/);
+  if (!frontmatterMatch) return;
+
+  const [fullMatch, frontmatter] = frontmatterMatch as unknown as [string, string];
+  if (!/^name: .*$/m.test(frontmatter)) return;
+
+  const updatedFrontmatter = frontmatter.replace(/^name: .*$/m, `name: ${localName}`);
+  if (updatedFrontmatter === frontmatter) return;
+
+  await Bun.write(skillMdPath, raw.replace(fullMatch, `---\n${updatedFrontmatter}\n---\n`));
+}
+
 function buildUpstreamMd(entry: RegistryEntry): string {
   return `---
 provider: ${entry.provider}
@@ -136,6 +153,7 @@ async function syncEntry(entry: RegistryEntry): Promise<{ ok: boolean; error?: s
     spinner.text = `${entry.local_name} ${pc.dim("writing files...")}`;
     await rm(destPath, { recursive: true, force: true });
     await cp(sourcePath, destPath, { recursive: true });
+    await normalizeSkillName(destPath, entry.local_name);
     await Bun.write(join(destPath, "UPSTREAM.md"), buildUpstreamMd(entry));
 
     spinner.succeed(
