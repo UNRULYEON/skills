@@ -18,3 +18,10 @@ skills:
     update_policy: latest
     status: active
     owner: amar
+  - local_name: cloudflare-workers-best-practices
+    upstream_repo: cloudflare/skills
+    upstream_path: skills/workers-best-practices
+    pinned_ref: 70215303d44a81a0db3219428f4825b604fc6061
+    update_policy: latest
+    status: active
+    owner: amar
