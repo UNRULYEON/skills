@@ -18,3 +18,38 @@ skills:
     update_policy: latest
     status: active
     owner: amar
+  - local_name: better-colors
+    upstream_repo: jakubkrehel/skills
+    upstream_path: skills/better-colors
+    pinned_ref: f2d1354f9966fd4d03f9c2beb69591ecec22af54
+    update_policy: latest
+    status: active
+    owner: amar
+  - local_name: better-interface
+    upstream_repo: jakubkrehel/skills
+    upstream_path: skills/better-interface
+    pinned_ref: f2d1354f9966fd4d03f9c2beb69591ecec22af54
+    update_policy: latest
+    status: active
+    owner: amar
+  - local_name: better-layout
+    upstream_repo: jakubkrehel/skills
+    upstream_path: skills/better-layout
+    pinned_ref: f2d1354f9966fd4d03f9c2beb69591ecec22af54
+    update_policy: latest
+    status: active
+    owner: amar
+  - local_name: better-typography
+    upstream_repo: jakubkrehel/skills
+    upstream_path: skills/better-typography
+    pinned_ref: f2d1354f9966fd4d03f9c2beb69591ecec22af54
+    update_policy: latest
+    status: active
+    owner: amar
+  - local_name: better-ui
+    upstream_repo: jakubkrehel/skills
+    upstream_path: skills/better-ui
+    pinned_ref: f2d1354f9966fd4d03f9c2beb69591ecec22af54
+    update_policy: latest
+    status: active
+    owner: amar
