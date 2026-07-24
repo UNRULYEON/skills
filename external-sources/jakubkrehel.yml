@@ -11,3 +11,10 @@ skills:
     update_policy: latest
     status: active
     owner: amar
+  - local_name: better-writing
+    upstream_repo: jakubkrehel/skills
+    upstream_path: skills/better-writing
+    pinned_ref: f2d1354f9966fd4d03f9c2beb69591ecec22af54
+    update_policy: latest
+    status: active
+    owner: amar
