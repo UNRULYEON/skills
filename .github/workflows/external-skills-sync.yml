@@ -35,7 +35,7 @@ jobs:
       - name: Re-vendor skills at their (possibly bumped) pins
         run: bun scripts/external-skills.ts sync --all --write
 
-      # Fixed branch name + branch-suffix: none means a still-open PR from a
+      # Fixed branch name (no branch-suffix) means a still-open PR from a
       # previous run gets overwritten with this run's diff instead of a new
       # PR being opened alongside it.
       - name: Open or update the pull request with this run's changes
@@ -45,5 +45,4 @@ jobs:
           title: "chore: sync external skills"
           body-path: ${{ steps.pr-body.outputs.path }}
           branch: chore/external-skills-sync
-          branch-suffix: none
           delete-branch: true
