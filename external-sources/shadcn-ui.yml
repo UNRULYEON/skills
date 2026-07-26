@@ -1,0 +1,13 @@
+# Registry of external skills vendored via this provider.
+# Do not edit vendored skill directories directly — edit this file and
+# re-run: bun scripts/external-skills.ts sync <local_name> --write
+
+provider: shadcn-ui
+skills:
+  - local_name: shadcn
+    upstream_repo: shadcn-ui/ui
+    upstream_path: skills/shadcn
+    pinned_ref: 7774cd7dcee1e98d0815aa6e829f33a7fc952fdf
+    update_policy: latest
+    status: active
+    owner: amar
