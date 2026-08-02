@@ -109,7 +109,7 @@ function resolveOutDir(explicit) {
 }
 
 function parseArgs(argv) {
-  const args = { viewport: "both", waitFor: null, steps: null, delay: 0 };
+  const args = { viewport: "both", waitFor: null, steps: null, delay: 0, highlight: [] };
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -121,6 +121,7 @@ function parseArgs(argv) {
     else if (arg === "--viewport") args.viewport = next();
     else if (arg === "--steps") args.steps = next();
     else if (arg === "--wait-for") args.waitFor = next();
+    else if (arg === "--highlight") args.highlight.push(next());
     else if (arg === "--delay") args.delay = Number(next());
     else if (arg === "--video") args.video = true;
     else if (arg === "--keep-webm") args.keepWebm = true;
@@ -159,6 +160,40 @@ async function launch(playwright) {
   }
 }
 
+const warnedSelectors = new Set();
+
+// Outlines the elements the diff touched, so a reader comparing before and
+// after knows where to look. Outline draws outside the box and takes no space,
+// so the marked page lays out exactly like the unmarked one.
+async function markHighlights(page, selectors) {
+  const found = await page.evaluate((sels) => {
+    const id = "visual-capture-highlight";
+    if (!document.getElementById(id)) {
+      const style = document.createElement("style");
+      style.id = id;
+      style.textContent = "[data-visual-capture-highlight]{"
+        + "outline:3px solid #ff2d55!important;outline-offset:2px!important;}";
+      document.head.append(style);
+    }
+
+    let count = 0;
+    for (const selector of sels) {
+      for (const element of document.querySelectorAll(selector)) {
+        element.setAttribute("data-visual-capture-highlight", "");
+        count++;
+      }
+    }
+    return count;
+  }, selectors);
+
+  const key = selectors.join(", ");
+  if (found === 0 && !warnedSelectors.has(key)) {
+    warnedSelectors.add(key);
+    console.error(`no element matched ${key} — capturing unmarked`);
+  }
+  return found;
+}
+
 async function captureViewport(browser, args, viewport) {
   const { name: viewportName, ...device } = viewport;
   const outDir = path.resolve(args.out);
@@ -182,6 +217,7 @@ async function captureViewport(browser, args, viewport) {
   let videoSource = null;
 
   async function capture(label = "") {
+    if (args.highlight.length) await markHighlights(page, args.highlight);
     const suffix = label ? `-${label}` : shotIndex === 0 ? "" : `-${shotIndex}`;
     const file = path.join(outDir, `${args.name}-${viewportName}${suffix}.png`);
     await page.screenshot({ path: file, fullPage: Boolean(args.fullPage) });
@@ -197,6 +233,8 @@ async function captureViewport(browser, args, viewport) {
     if (args.waitFor) await page.waitForSelector(args.waitFor, { timeout: 15_000 });
     await page.evaluate(() => document.fonts?.ready);
     if (args.delay) await page.waitForTimeout(args.delay);
+    // Video never calls capture(), so mark up front and record the whole run marked.
+    if (args.highlight.length && args.video) await markHighlights(page, args.highlight);
 
     if (args.steps) {
       const mod = await import(pathToFileURL(path.resolve(args.steps)).href);

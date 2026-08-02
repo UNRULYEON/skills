@@ -33,6 +33,10 @@ A change that is only visible after interaction (hover, open, submit, scroll) is
 
 Decide the framing now, per route: the default shoots the viewport only, so anything below the fold — a footer, a table's last rows, a section at the bottom of a long page — needs `--full-page`, or a scroll in a steps file. A capture that does not contain the changed element is a wasted run.
 
+Decide the **highlight** too. An element the diff *modified* — restyled, moved, resized, reworded — is hard to spot in a full page, so pass `--highlight "<selector>"` (repeatable) and the runner outlines it in both shots, turning the pair into a spot-the-difference with the answer circled. An element the diff *added* needs no highlight: it is the only thing in the after that is not in the before.
+
+Pick a selector that exists on **both** sides — the modified element's own `id`, `data-*`, or a stable class — because a selector that only matches after the change marks one shot and leaves the other bare. The runner says on stderr when a selector matched nothing and captures unmarked rather than failing.
+
 Find the dev server URL from the project's own scripts (`package.json`, README, `.env`). If no server is running, start it in the background.
 
 **Ready means HTTP 200 on the route you are about to capture** — not merely that the port answers:
@@ -90,7 +94,7 @@ node <skill>/scripts/capture.mjs --url "http://localhost:$BASE_PORT/settings" --
 node <skill>/scripts/capture.mjs --url "http://localhost:3000/settings"       --out "$OUT/after"  --name settings
 ```
 
-Any flag you pass to one, pass to the other: a `--full-page` before against a viewport-only after is not a comparison.
+Any flag you pass to one, pass to the other — `--full-page`, `--delay`, `--highlight`, all of it. A `--full-page` before against a viewport-only after is not a comparison, and a highlight on one side alone reads as if the marker itself were the change.
 
 Both viewports run by default and write `<name>-desktop.png` and `<name>-mobile.png`. The runner prints one **absolute** path per file it wrote — `--out` is resolved against the working directory — so those lines feed straight into the Read tool and into the report.
 
@@ -101,7 +105,8 @@ Both viewports run by default and write `<name>-desktop.png` and `<name>-mobile.
 | `--keep-webm`          | Skip mp4 conversion and keep Playwright's raw `.webm`                  |
 | `--steps <file.mjs>`   | Drive the page and shoot at chosen moments                             |
 | `--full-page`          | Whole scrollable page rather than the viewport                         |
-| `--wait-for <sel>`     | Block until a selector appears                                         |
+| `--wait-for <sel>`     | Block until a selector appears                                          |
+| `--highlight <sel>`    | Outline the matching elements; repeatable                              |
 | `--delay <ms>`         | Extra settle time after load                                           |
 | `--name`               | Output slug (required)                                                 |
 | `--out <dir>`          | Override the output directory                                          |
