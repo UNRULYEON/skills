@@ -3,7 +3,7 @@ provider: shadcn-ui
 local_name: shadcn
 upstream_repo: shadcn-ui/ui
 upstream_path: skills/shadcn
-pinned_ref: 7774cd7dcee1e98d0815aa6e829f33a7fc952fdf
+pinned_ref: cb2bcd88d93b2f9bddb030e9136f1f8773e7eac4
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync shadcn --write`.
 
 - Source repo: [shadcn-ui/ui](https://github.com/shadcn-ui/ui)
 - Source path: `skills/shadcn`
-- Pinned commit: [`7774cd7dcee1e98d0815aa6e829f33a7fc952fdf`](https://github.com/shadcn-ui/ui/commit/7774cd7dcee1e98d0815aa6e829f33a7fc952fdf)
+- Pinned commit: [`cb2bcd88d93b2f9bddb030e9136f1f8773e7eac4`](https://github.com/shadcn-ui/ui/commit/cb2bcd88d93b2f9bddb030e9136f1f8773e7eac4)
 - Update policy: latest

@@ -9,7 +9,9 @@ Great interfaces rarely come from a single thing. It's usually a collection of s
 
 When reviewing, slow the interface down: replay motion at 10% speed in the browser's Animations panel and walk every state: hover, focus, active, loading, empty. What feels off at 10% speed is what's subtly wrong at full speed.
 
-Typography (text wrapping, font smoothing, tabular numbers, spacing) is covered by the `better-typography` skill; use that for anything text-related. Accessibility (hit areas, focus states, keyboard support, ARIA) is covered by the `better-accessibility` skill. Layout structure (grouping, spacing between sections, breakpoints) is covered by the `better-layout` skill.
+Preserve the project's component library, tokens, and density. Match its established motion language except where a principle below prescribes an exact interaction pattern.
+
+Typography (text wrapping, font rendering, tabular numbers, spacing) is covered by the `better-typography` skill; use that for anything text-related. Accessibility (hit areas, focus states, keyboard support, ARIA, reduced motion) is covered by the `better-accessibility` skill. Layout structure (grouping, spacing between sections, breakpoints, spatial RTL) is covered by the `better-layout` skill.
 
 ## Quick Reference
 
@@ -86,11 +88,11 @@ No custom animation on high-frequency interactions: the attention cost repeats o
 
 | Mistake | Fix |
 | --- | --- |
-| Same border radius on parent and child | Calculate `outerRadius = innerRadius + padding` |
+| Same border radius on closely nested parent and child | Calculate `outerRadius = innerRadius + padding` |
 | Icons look off-center | Adjust optically with padding or fix SVG directly |
 | Border used only to fake elevation | Use layered `box-shadow` with transparency; keep structural and state borders |
 | Jarring staged entrance or contextual exit | Stagger infrequent entrances and keep context-preserving exits subtle |
-| Animation plays on page load | Add `initial={false}` to `AnimatePresence` |
+| Stateful icon or toggle animates its default state on page load | Add `initial={false}` to that `AnimatePresence`; preserve intentional page entrances |
 | `transition: all` on elements | Specify exact properties |
 | First-frame animation stutter | Add `will-change: transform` (sparingly) |
 | Hairline icon beside bold text | Match the stroke width to the text weight |
@@ -100,11 +102,13 @@ No custom animation on high-frequency interactions: the attention cost repeats o
 
 ## Review Output Format
 
-Present every review in two parts.
+Use this format only when the user asks for a standalone UI-polish review. When `better-interface` orchestrates the review, provide domain evidence and findings to that skill and let its output format, severity scale, consolidation rules, cap, and verdict take precedence.
+
+Present the standalone review in two parts.
 
 ### Findings
 
-Group findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Include every change made or proposed, not a subset. Never use separate "Before:" / "After:" lines.
+Group all confirmed findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Never use separate "Before:" / "After:" lines.
 
 - **Severity**: `HIGH` makes an interaction misleading, unresponsive, or repeatedly disruptive; `MEDIUM` creates a noticeable craft or consistency problem; `LOW` is isolated polish.
 - **Location**: cite `path/to/file:line`. If the artifact has no source files, cite the exact screen and component instead.

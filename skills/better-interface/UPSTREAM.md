@@ -3,7 +3,7 @@ provider: jakubkrehel
 local_name: better-interface
 upstream_repo: jakubkrehel/skills
 upstream_path: skills/better-interface
-pinned_ref: f2d1354f9966fd4d03f9c2beb69591ecec22af54
+pinned_ref: a67333399dabbc71d7778962cb9c4fb9b86a00d0
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync better-interface --write`.
 
 - Source repo: [jakubkrehel/skills](https://github.com/jakubkrehel/skills)
 - Source path: `skills/better-interface`
-- Pinned commit: [`f2d1354f9966fd4d03f9c2beb69591ecec22af54`](https://github.com/jakubkrehel/skills/commit/f2d1354f9966fd4d03f9c2beb69591ecec22af54)
+- Pinned commit: [`a67333399dabbc71d7778962cb9c4fb9b86a00d0`](https://github.com/jakubkrehel/skills/commit/a67333399dabbc71d7778962cb9c4fb9b86a00d0)
 - Update policy: latest

@@ -7,7 +7,7 @@ skills:
   - local_name: react-doctor
     upstream_repo: millionco/react-doctor
     upstream_path: skills/react-doctor
-    pinned_ref: 8534d864e4f94b90e964d56a4f741cc1596d63db
+    pinned_ref: 3a93a34beb050a4b55a34b5ac3f6f5b23a07be58
     update_policy: latest
     status: active
     owner: amar

@@ -12,9 +12,13 @@ How copy renders (capitalization via `text-transform`, truncation, smart punctua
 
 ## Core Principles
 
-### 1. One Voice, Flexible Tone
+### 1. Recon the Existing Voice
 
-The product has one voice: plain, direct, consistent terms for the same things. Keep a shared term list so the same action never has two names: if it's "Archive" in the menu, it isn't "Move to storage" in the toast. Tone flexes with the stakes:
+Before writing or reviewing, inspect nearby interface copy, the product's terminology, localization conventions, and any voice or content style guide. Preserve intentional brand character when it remains clear and appropriate to the stakes. Treat a difference from generic plain language as a finding only when it creates inconsistency, ambiguity, translation risk, or an inappropriate tone.
+
+### 2. One Voice, Flexible Tone
+
+The product has one voice, established by its existing system rather than invented during a local edit. Keep terms consistent: if it's "Archive" in the menu, it isn't "Move to storage" in the toast. Tone flexes with the stakes:
 
 | Context | Tone |
 | --- | --- |
@@ -23,35 +27,35 @@ The product has one voice: plain, direct, consistent terms for the same things. 
 | Errors, destructive confirmations | Calm, plain, zero playfulness |
 | Data loss, security | Serious, explicit |
 
-### 2. Say "You", Never "The User"
+### 3. Address the Reader Directly
 
-Address the reader directly as "you". Avoid "we": it's ambiguous, and in errors it reads as deflection. "Unable to load content", not "We're having trouble loading this content". Use possessives sparingly ("Favorites" over "Your Favorites") and never switch perspective mid-app.
+In instructional interface copy, address the reader directly as "you" rather than "the user." Avoid “we” in errors when it creates ambiguity or reads as deflection: prefer “Unable to load content” over “We're having trouble loading this content.” Preserve an established first-person brand voice in low-stakes contexts when it remains clear. Use possessives sparingly (“Favorites” over “Your Favorites”) and never switch perspective accidentally.
 
-### 3. Plain Words Over Clever Ones
+### 4. Plain Words Over Clever Ones
 
 Choose easily understood words and delete every word that isn't needed. No idioms, colloquialisms, or humor that won't translate. Skip unnecessary gender: "Subscribers can post recipes", not "each subscriber can post his or her recipes". Match the input device: "tap" on touch, "click" with a pointer, "select" when both are possible. Never build sentences by concatenating fragments around variables (`"You have " + n + " new messages"`); word order changes per language, so use full templated strings with proper pluralization.
 
-### 4. Verb-First Buttons
+### 5. Verb-First Buttons
 
 Button labels start with a verb naming the specific action: "Send", "Save draft", "Delete project". Never "OK!", "Let's go!", or bare "Yes"/"No" on consequential actions. Confirmation buttons repeat the consequence so the dialog is answerable without reading the body: "Delete this project?" offers `Delete project` and `Cancel`, not `Yes` and `No`.
 
-### 5. Consistent Flow Vocabulary
+### 6. Consistent Flow Vocabulary
 
 Multi-step flows use one vocabulary: "Get Started" to enter, "Continue" or "Next" (pick one) to advance, "Done" to finish. Alternating synonyms across steps makes users wonder if the buttons do different things.
 
-### 6. Links Describe Their Destination
+### 7. Links Describe Their Destination
 
 Link text makes sense out of context; screen-reader users navigate by a list of the page's links. "Read the billing docs", never "Click here" (which also fails the device-verb rule on touch), and never a bare "Learn more" when several appear on one page. Suffix each: "Learn more about exports".
 
-### 7. One Capitalization Policy
+### 8. One Capitalization Policy
 
 Pick title case or sentence case per element type (all buttons, all headings) and apply it consistently; sentence case is the safer default: calmer, no per-word case rules, localizes cleanly. "Save Changes" beside "Discard changes" reads as sloppiness.
 
-### 8. Settings Describe the ON State
+### 9. Settings Describe the ON State
 
 Label a toggle for what happens when it's on: "Send read receipts", and users infer the off state. Never label the negative ("Don't send read receipts"), which turns the toggle into a double negative. Link directly to a referenced setting instead of describing the path to it: a "Notification settings" link, not "Go to Settings > Notifications > Email".
 
-### 9. Errors Say How to Fix, Next to Where It Broke
+### 10. Errors Say How to Fix, Next to Where It Broke
 
 An error is an instruction, adjacent to the failing field:
 
@@ -63,7 +67,7 @@ An error is an instruction, adjacent to the failing field:
 
 No blame, no "oops", no exclamation marks. Phrase hints positively ("Use only letters", not "Don't use numbers or symbols") and show them before the mistake, not after. If the same error keeps firing for many users, redesign the interaction instead of rewording it.
 
-### 10. Empty States Point Forward
+### 11. Empty States Point Forward
 
 An empty state says what this place is and how to fill it, with one clear next action:
 
@@ -79,7 +83,7 @@ An empty state says what this place is and how to fill it, with one clear next a
 
 Search and filter empty states name the query and offer an exit: "No results for 'quarterly'. Clear filters". Never park crucial persistent information in an empty state; it disappears the moment content exists.
 
-### 11. Placeholders Are Examples, Not Labels
+### 12. Placeholders Are Examples, Not Labels
 
 Placeholders show the expected format (`name@example.com`, `DD/MM/YYYY`). A placeholder is never the field's only label: it vanishes on input, and every field keeps a visible label.
 
@@ -87,8 +91,9 @@ Placeholders show the expected format (`name@example.com`, `DD/MM/YYYY`). A plac
 
 | Mistake | Fix |
 | --- | --- |
-| "The user" in interface copy | Address the reader as "you" |
-| "We're having trouble…" in an error | Drop the "we": "Unable to load content" |
+| Local rewrite ignores the product's established terminology or voice | Inspect nearby copy and the style guide before proposing a change |
+| "The user" in instructional interface copy | Address the reader directly as "you" |
+| "We're having trouble…" obscures responsibility or recovery | Use a direct status and next step: "Unable to load content" |
 | `OK` / `Yes` confirming a destructive dialog | Repeat the consequence: "Delete project" |
 | "Continue" on step 2, "Next" on step 3 | One flow vocabulary throughout |
 | "Click here" or bare "Learn more" link | Describe the destination: "Read the billing docs" |
@@ -101,11 +106,13 @@ Placeholders show the expected format (`name@example.com`, `DD/MM/YYYY`). A plac
 
 ## Review Output Format
 
-Present every review in two parts.
+Use this format only when the user asks for a standalone writing review. When `better-interface` orchestrates the review, provide domain evidence and findings to that skill and let its output format, severity scale, consolidation rules, cap, and verdict take precedence.
+
+Present the standalone review in two parts.
 
 ### Findings
 
-Group findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Include every change made or proposed, not a subset. Never use separate "Before:" / "After:" lines.
+Group all confirmed findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Never use separate "Before:" / "After:" lines.
 
 - **Severity**: `HIGH` misleads users, obscures a consequence, or prevents recovery; `MEDIUM` makes a task harder to understand; `LOW` is isolated voice or consistency polish.
 - **Location**: cite `path/to/file:line`. If the artifact has no source files, cite the exact screen and component instead.

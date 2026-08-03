@@ -3,7 +3,7 @@ provider: cloudflare
 local_name: cloudflare-workers-best-practices
 upstream_repo: cloudflare/skills
 upstream_path: skills/workers-best-practices
-pinned_ref: 70215303d44a81a0db3219428f4825b604fc6061
+pinned_ref: 30553f89ae1ef1e3c2917cd09d72dac992bb4e9a
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync cloudflare-workers-best-practice
 
 - Source repo: [cloudflare/skills](https://github.com/cloudflare/skills)
 - Source path: `skills/workers-best-practices`
-- Pinned commit: [`70215303d44a81a0db3219428f4825b604fc6061`](https://github.com/cloudflare/skills/commit/70215303d44a81a0db3219428f4825b604fc6061)
+- Pinned commit: [`30553f89ae1ef1e3c2917cd09d72dac992bb4e9a`](https://github.com/cloudflare/skills/commit/30553f89ae1ef1e3c2917cd09d72dac992bb4e9a)
 - Update policy: latest

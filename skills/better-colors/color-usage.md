@@ -40,7 +40,7 @@ If a role has no token yet, add the token; don't borrow one that happens to have
 
 ## One colored action per view
 
-To emphasize the primary action, color the button's background, and leave every other control neutral. Two colored control backgrounds compete; five are a form with no hierarchy.
+When the product uses filled color to encode primary emphasis, give that treatment to one primary action in the current decision context and leave peer actions neutral. Preserve an established component hierarchy that communicates emphasis another way; do not recolor controls merely to impose this recipe. Multiple colored backgrounds are acceptable when they encode distinct states or categories and do not compete as peer actions.
 
 ```html
 <!-- Good: one filled primary action, neutral secondaries -->

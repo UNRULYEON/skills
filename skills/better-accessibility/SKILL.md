@@ -9,7 +9,7 @@ Accessibility is not a compliance checkbox bolted on at the end; it is the floor
 
 When reviewing, walk the interface as a keyboard-only user first (every flow must complete without a mouse), then as a screen-reader user: does each control announce a name, a role, and its state? When unsure, prefer the platform default over a custom rebuild, and remove ARIA rather than add it.
 
-Contrast math (APCA thresholds, fixing contrast in OKLCH) is covered by the `better-colors` skill; text sizes, iOS input zoom, and RTL are covered by the `better-typography` skill.
+Rendered-pair contrast measurement and color remediation are covered by the `better-colors` skill; visual text sizing and iOS input zoom by `better-typography`; spatial RTL layout by `better-layout`.
 
 ## Quick Reference
 
@@ -30,7 +30,7 @@ The first rule of ARIA: don't use ARIA when a native element exists. `<button>` 
 
 ### 2. Visible Focus Rings
 
-Style `:focus-visible`, not bare `:focus`, so keyboard users get a ring and mouse users don't. The browser's default ring (`outline-style: auto`) renders the focus color the user configured in their OS and browser; prefer keeping it and only adding `outline-offset: 2px`. If the design needs a custom ring, use `outline: 2px solid` with no color (it renders `currentColor`, never a hardcoded brand color) at `3:1` contrast against adjacent colors. Never `outline: none` without a visible replacement.
+Style `:focus-visible`, not bare `:focus`, so keyboard users get a ring and mouse users usually don't. Prefer the browser's unmodified focus indicator. If the design needs a custom ring, use a project focus token or another explicit color and verify the complete indicator against every adjacent color it crosses; `currentColor` is acceptable only after the same check. Use at least a `2px` solid perimeter or an equivalent visible area. Never use `outline: none` without a verified replacement, and preserve system colors in forced-colors mode.
 
 ### 3. Full Keyboard Support
 
@@ -42,7 +42,7 @@ Modals set `inert` on the background content, move focus inside on open, and ret
 
 ### 5. Minimum Hit Area
 
-Interactive elements need a 44×44px hit area for touch or mobile contexts, at least 40×40px on desktop; WCAG 2.5.8's hard floor is 24×24px. Extend with a pseudo-element if the visible element is smaller. Never let hit areas of two elements overlap.
+WCAG 2.5.8's Level AA baseline is a 24×24 CSS-pixel target or one of its defined spacing, equivalent-control, inline, user-agent, or essential exceptions. For easier activation, aim for 44×44px in touch contexts and 40×40px in desktop interfaces when density permits. Extend with a pseudo-element if the visible element should stay smaller. Never let extended hit areas overlap.
 
 ### 6. Label and Type Every Control
 
@@ -58,7 +58,7 @@ Icon-only buttons need a descriptive `aria-label`. Visible label text must appea
 
 ### 9. Don't Rely on Color Alone
 
-Status needs a redundant cue: icon, text, or underline alongside the color. Contrast floors: `4.5:1` for text, `3:1` for UI components and focus indicators (the WCAG 2 minimums; `better-colors` prefers APCA thresholds). When contrast fails, report the failing pair and the threshold it misses; don't change the project's colors unless asked, as the `better-colors` skill covers measuring and, on request, fixing.
+Status needs a redundant cue: icon, text, or underline alongside the color. Determine which WCAG contrast requirement applies from the content and state, then use `better-colors` to measure the rendered foreground/background pair. When contrast fails, report the pair and requirement it misses; do not change the project's colors unless asked.
 
 ### 10. Honor prefers-reduced-motion
 
@@ -66,7 +66,7 @@ Wrap motion in `@media (prefers-reduced-motion: no-preference)` so it is opt-in.
 
 ### 11. Announce Dynamic Content
 
-Toasts and inline validation use `aria-live="polite"` (`role="status"`); reserve `assertive` (`role="alert"`) for errors. The live region must exist empty in the DOM before its content is injected, or it won't announce.
+Use `aria-describedby` for field-specific validation, a polite live region (`role="status"`) for non-urgent updates not tied to a control such as toasts or result counts, and `role="alert"` only for urgent errors not tied to a control. For reliable repeated polite announcements, render a stable empty region before updating its text; dynamically inserted alerts have different support and must be tested with the target screen readers.
 
 ### 12. Alt Text by Purpose
 
@@ -74,7 +74,7 @@ Decorative images get `alt=""`, informative images describe the meaning, functio
 
 ### 13. Structure Is Navigation
 
-One `<h1>` per page, no skipped heading levels, exactly one `<main>`. A "Skip to content" link is the first focusable element, and anchored headings get `scroll-margin-top`.
+Use headings that describe their sections and form a coherent outline; one page-level `<h1>` and properly nested levels are the recommended default, not standalone WCAG pass/fail rules. Expose one visible primary `<main>` landmark. When repeated navigation or chrome precedes it, make a "Skip to content" link the first focusable element. Anchored headings get `scroll-margin-top`.
 
 ### 14. Survive Zoom and Text Resize
 
@@ -85,11 +85,11 @@ The page must work at 200% zoom and reflow at 320px width without horizontal scr
 | Mistake | Fix |
 | --- | --- |
 | `outline: none` to remove the focus ring | Style `:focus-visible` instead; mouse clicks won't show it |
-| Hardcoded brand color on focus rings | Keep the default ring (`outline-style: auto`) or use colorless `outline: 2px solid` (`currentColor`) |
+| Custom focus color assumed to work everywhere | Verify the full indicator against every adjacent color and in forced-colors mode |
 | `<div onClick>` for a button or link | `<button>` for actions, `<a href>` for navigation |
 | Placeholder used as the only label | Add a visible `<label for>`; placeholders disappear on input |
 | Positive `tabindex` to fix focus order | Fix the DOM order; only use `0` and `-1` |
-| Live region injected together with its message | Pre-render the empty region, inject text afterwards |
+| Repeated polite update inconsistently announced | Keep a stable empty status region and update its text; test the target screen readers |
 | `assertive` live region for a routine toast | Use `polite`; reserve `assertive` for errors |
 | `aria-hidden="true"` on a focusable element | Remove it or make the element non-focusable |
 | Functional icon alt describes the picture | Describe the action: `alt="Search"`, not `alt="magnifying glass"` |
@@ -98,11 +98,13 @@ The page must work at 200% zoom and reflow at 320px width without horizontal scr
 
 ## Review Output Format
 
-Present every review in two parts.
+Use this format only when the user asks for a standalone accessibility review. When `better-interface` orchestrates the review, provide domain evidence and findings to that skill and let its output format, severity scale, consolidation rules, cap, and verdict take precedence.
+
+Present the standalone review in two parts.
 
 ### Findings
 
-Group findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Include every change made or proposed, not a subset. Never use separate "Before:" / "After:" lines.
+Group all confirmed findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Never use separate "Before:" / "After:" lines.
 
 - **Severity**: `HIGH` prevents a task, hides content from assistive technology, or creates a systemic accessibility failure; `MEDIUM` makes an interaction meaningfully harder; `LOW` is isolated polish.
 - **Location**: cite `path/to/file:line`. If the artifact has no source files, cite the exact screen and component instead.

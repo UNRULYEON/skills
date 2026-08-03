@@ -51,7 +51,7 @@ The inverse also holds: don't give static elements control styling. A non-clicka
 Pick a small set of alignment edges and put everything on them; the eye tracks straight edges to scan content.
 
 - Every stray edge (an icon 2px off the text edge, a card padded differently from its neighbor) reads as noise even when nobody can name the problem.
-- Use one consistent indentation step (`16px`) to express hierarchy; deeper nesting repeats the same step.
+- Use one consistent project spacing step to express hierarchy; `16px` is a useful default when no scale exists, and deeper nesting repeats the same step.
 - Numbers in tables right-align to the trailing edge (see `better-typography` for tabular figures); text left-aligns to the leading edge.
 
 ```css
@@ -67,7 +67,7 @@ Pick a small set of alignment edges and put everything on them; the eye tracks s
 
 ## Logical Properties, Not Physical
 
-Always express horizontal position as leading/trailing, not left/right, so the layout mirrors automatically under `dir="rtl"`:
+Express direction-dependent horizontal position as leading/trailing so the layout mirrors automatically under `dir="rtl"`:
 
 | Physical (avoid) | Logical (use) |
 | --- | --- |
