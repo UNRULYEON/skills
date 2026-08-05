@@ -29,7 +29,7 @@ Identify the framework, styling system, component library, design tokens, suppor
 
 ### 3. Use Domain Skills as the Sources of Truth
 
-Load and apply the six owning skills. In `quick` mode, inspect all six domains but spend depth only where the primary flow has evidence. In `full` mode, complete each domain review before consolidation.
+Before reviewing, confirm that all six owning skills below are available. Load and apply every available owner. In `quick` mode, inspect all six domains but spend depth only where the primary flow has evidence. In `full` mode, complete each available domain review before consolidation.
 
 Review in this order so foundational failures are not hidden by polish:
 
@@ -39,6 +39,10 @@ Review in this order so foundational failures are not hidden by polish:
 4. `better-typography`
 5. `better-colors`
 6. `better-ui`
+
+This skill owns the final response. When a domain skill is loaded through `better-interface`, apply its principles and references but ignore its standalone **Review Output Format**. Use the consolidated format, shared severity, and finding cap in this file instead.
+
+If an owning skill is unavailable, mark that domain `Not reviewed`, name the missing skill, and continue with the remaining domains. Do not recreate its rules from memory, substitute a neighboring skill, or claim holistic coverage.
 
 When two skills appear to cover the same issue, assign it to the skill that owns the underlying rule and mention secondary effects in the **Why** cell. Report it once.
 
@@ -82,6 +86,7 @@ Treat a review request as read-only. Do not edit source code unless the user als
 | Visual claim inferred only from source | Inspect the rendered state or mark it not verified |
 | Unlimited low-impact polish | Respect the mode cap; omit `LOW` findings in `quick` |
 | Silent gaps in coverage | Show which domains and states were actually inspected |
+| Missing owning skill silently treated as covered | Mark the domain `Not reviewed` and name the unavailable skill |
 | No rejected candidates | Include the required considered-but-rejected table |
 | Review silently edits code | Stay read-only unless implementation was requested |
 | “Approve” with pending actionable findings | Use `Needs changes` or `Block` |

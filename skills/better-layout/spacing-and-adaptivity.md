@@ -4,15 +4,15 @@ Space between controls, margins against the viewport, hinting at off-screen cont
 
 ## Breathing Room Between Targets
 
-Controls placed too close together get mis-tapped and read as one unit. Minimum clearances:
+Controls placed too close together get mis-tapped and read as one unit. When the project has no established density scale, use these starting points:
 
-| Between | Minimum |
+| Between | Starting point |
 | --- | --- |
 | Adjacent bordered/filled controls (buttons, inputs) | `12px` |
 | Around borderless controls (text buttons, icon buttons) | `24px` |
 | Unrelated control groups | `24px`+ (2× the intra-group gap) |
 
-Borderless controls need more clearance because nothing marks where one target ends and the next begins; the space itself is the boundary.
+Borderless controls usually need more clearance because nothing marks where one target ends and the next begins; the space itself is the boundary. Compact professional tools may use less when the hit areas remain distinct and do not overlap. Preserve an established, usable density instead of expanding controls solely to match these values.
 
 ```html
 <!-- Good: bordered buttons at 12px, icon buttons given room -->
@@ -29,11 +29,11 @@ Borderless controls need more clearance because nothing marks where one target e
 </div>
 ```
 
-Hit-area sizes (44×44px touch, 40×40px desktop) and pseudo-element expansion are covered by the `better-accessibility` skill; these clearances are in addition, so expanded hit areas never overlap.
+WCAG target-size requirements, larger usability targets, and pseudo-element expansion are covered by the `better-accessibility` skill; these clearances are in addition, so expanded hit areas never overlap.
 
 ## Inset Buttons from the Edges
 
-Buttons pressed edge-to-edge against the viewport look like system chrome and clip against curved corners and gesture zones. Keep them inside the layout margins:
+In content layouts, buttons pressed accidentally against the viewport can look like system chrome and clip against curved corners or gesture zones. Keep them inside the layout margins. Edge-to-edge actions remain valid when they intentionally are application/platform chrome and account for safe areas:
 
 ```css
 /* Good: inset action bar */
@@ -52,11 +52,11 @@ Buttons pressed edge-to-edge against the viewport look like system chrome and cl
 }
 ```
 
-Minimum `16px` inline margin on mobile; the button can still span the full content width inside those margins.
+Start near `16px` inline margin on mobile when the project has no layout token; the button can still span the full content width inside those margins.
 
 ## Progressive Disclosure Needs an Affordance
 
-Hiding complexity is good; hiding it without a cue is a trap. Every piece of off-screen or collapsed content needs a visible hint that it exists:
+Hiding complexity is good; hiding it without a cue is a trap. Every piece of off-screen or collapsed content needs a visible hint that it exists. Preserve the product's established scroll indicator or disclosure pattern; use the recipes below when no clear cue exists:
 
 - **Peeking items.** In a horizontal scroller or carousel, size items so the next one peeks `16–32px` past the container edge. A row of cards that ends exactly at the edge looks complete, and nobody scrolls it.
 - **Disclosure controls.** Collapsed sections get a chevron or "Show more" control; the label states what's hidden ("Show 12 more results"), not just "More".
@@ -141,7 +141,7 @@ Test order: the smallest supported size and the largest first (those break first
 
 Layouts fail in two directions: content grows, and viewports shrink.
 
-**Translated strings run 30–40% longer** than English (German famously more). Rules:
+**String expansion varies substantially by language and source-string length.** Do not rely on one universal percentage. Rules:
 
 - No fixed widths sized to English labels; use `max-width` plus wrapping.
 - No fixed heights on text containers; use `min-height` if a floor is needed.

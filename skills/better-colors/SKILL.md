@@ -5,7 +5,7 @@ description: OKLCH color space and color usage for web projects. Convert hex/rgb
 
 # OKLCH Colors
 
-OKLCH is a perceptually uniform color space where the numbers actually mean what you think they mean. Most color problems in CSS (broken palettes, failing contrast, hue drift) come from using color spaces that don't match how we see. OKLCH fixes the model so the tools work. To explore interactively, visit [oklch.fyi](https://oklch.fyi).
+OKLCH is a perceptually uniform color space where lightness, chroma, and hue are useful design controls. Use it when the project already uses OKLCH, when creating a new color system, or when the user asks for conversion or palette work. Otherwise preserve the project's established tokens and notation: a consistent hex or RGB token system is better than introducing a second color representation for an isolated fix. To explore interactively, visit [oklch.fyi](https://oklch.fyi).
 
 ## Quick Reference
 
@@ -21,6 +21,7 @@ OKLCH is a perceptually uniform color space where the numbers actually mean what
 
 ### 1. Use a Perceptual Color Space
 
+- **Respect the existing system.** Do not convert notation merely because this skill was loaded. Reuse the project's semantic tokens and authoring format unless the task includes a color-system migration.
 - **Perceptual uniformity.** Equal L steps = equal brightness. `oklch(0.5 ...)` is visually mid. HSL's `lightness: 50%` varies wildly by hue.
 - **Stable hue.** HSL blue shifts toward purple as lightness changes. OKLCH hue stays constant across the full lightness range.
 - **Independent chroma.** Chroma is an absolute measure of colorfulness that doesn't depend on lightness. HSL saturation does.
@@ -64,7 +65,8 @@ Use three decimal places for L and C and up to three for H. Drop trailing zeros 
 
 | Issue | Fix |
 | --- | --- |
-| Hex/rgb/hsl color in new code | Convert to `oklch()` |
+| Raw color bypasses the project's semantic token system | Reuse or add the correct role token in the project's existing notation |
+| Isolated OKLCH value introduced into a hex/RGB codebase | Preserve the established notation unless the task includes a color-system migration |
 | HSL palette ramp with hue drift | Rebuild with constant oklch hue |
 | Failing contrast (check foreground vs its background using APCA) | Report the pair, its measured Lc and the threshold it misses; change colors only when asked (then adjust L, keep C and H) |
 | High chroma without gamut check | Clamp to max chroma for the L/H in sRGB |
@@ -80,11 +82,13 @@ Use three decimal places for L and C and up to three for H. Drop trailing zeros 
 
 ## Review Output Format
 
-Present every review in two parts.
+Use this format only when the user asks for a standalone color review. When `better-interface` orchestrates the review, provide domain evidence and findings to that skill and let its output format, severity scale, consolidation rules, cap, and verdict take precedence.
+
+Present the standalone review in two parts.
 
 ### Findings
 
-Group findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Include every color changed or proposed, not a subset. Never use separate "Before:" / "After:" lines.
+Group all confirmed findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Never use separate "Before:" / "After:" lines.
 
 - **Severity**: `HIGH` makes content unreadable or assigns a misleading semantic color; `MEDIUM` creates a noticeable theme, gamut, or consistency failure; `LOW` is isolated polish.
 - **Location**: cite `path/to/file:line`. If the artifact has no source files, cite the exact screen and component instead.

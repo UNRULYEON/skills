@@ -34,9 +34,9 @@ If a native element is truly impossible, the full polyfill is `role="button"` + 
 
 ## Landmarks and headings
 
-- Exactly one `<main>` per page. `<header>`, `<nav>`, `<aside>`, `<footer>` map to landmarks screen-reader users jump between.
+- Expose one visible primary `<main>` landmark. `<header>`, `<nav>`, `<aside>`, `<footer>` map to landmarks screen-reader users jump between.
 - Multiple landmarks of the same type need distinguishing labels: `<nav aria-label="Primary">`, `<nav aria-label="Breadcrumbs">`.
-- One `<h1>` per page; never skip heading levels (`h2` → `h4`). Headings are structure, not styling; style a heading level with CSS instead of picking the tag by size.
+- Headings describe their sections and form a coherent outline. One page-level `<h1>` and properly nested levels are the recommended default; do not report either convention as a standalone WCAG failure without a concrete navigation or comprehension impact. Headings are structure, not styling; style a heading level with CSS instead of picking the tag by size.
 - `<title>` matches the current context, most specific first: `Billing · Settings · Acme`.
 
 ## Accessible names

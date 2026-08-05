@@ -4,7 +4,7 @@ Target sizes, expanding hit areas without changing visual size, and collision ru
 
 ## Target sizes
 
-Interactive elements need a 44×44px hit area for touch or mobile contexts. In desktop interfaces, use at least 40×40px. The standards behind those numbers:
+Separate the conformance baseline from larger usability targets:
 
 | Standard | Minimum |
 | --- | --- |
@@ -13,7 +13,9 @@ Interactive elements need a 44×44px hit area for touch or mobile contexts. In d
 | Apple HIG | 44×44pt |
 | Material Design | 48×48dp |
 
-Treat 44px as the baseline for primary controls and 24px as an absolute floor for dense UI only. WCAG 2.5.8's spacing exception: an undersized target passes if a 24px circle centered on it doesn't intersect any other target's circle; in practice, 20px targets need at least a 4px gap.
+WCAG 2.5.8 Level AA requires a 24×24 CSS-pixel target or one of its defined exceptions. Treat 44px as a recommended touch target for primary controls and 40px as a useful desktop target when the product's density permits. Smaller controls are not automatically failures: check the spacing, equivalent-control, inline, user-agent, and essential exceptions before reporting one.
+
+Under the spacing exception, an undersized target passes if a 24px circle centered on its bounding box does not intersect another target or another undersized target's circle; in the simple case, 20px targets need at least a 4px gap.
 
 The visible element can stay small; the hit area is what must be big. If it looks clickable, it must be clickable across its whole visual extent: no dead zones (a checkbox and its label share one hit target).
 
@@ -35,7 +37,7 @@ If the visible element is smaller (e.g., a 20×20 checkbox), extend the hit area
   content: "";
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 50%; /* physical centering: direction-independent */
   transform: translate(-50%, -50%);
   width: 44px;
   height: 44px;
