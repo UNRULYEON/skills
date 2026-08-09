@@ -11,3 +11,10 @@ skills:
     update_policy: latest
     status: active
     owner: amar
+  - local_name: review-pr
+    upstream_repo: bholmesdev/hubble.md
+    upstream_path: .agents/skills/review-pr
+    pinned_ref: 320b736b76a136ec2a17692ea63311b070298269
+    update_policy: latest
+    status: active
+    owner: amar
