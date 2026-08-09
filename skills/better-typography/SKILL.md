@@ -9,7 +9,7 @@ Good typography is mostly restraint. A sensible scale, comfortable spacing and e
 
 When reviewing, read the page instead of scanning the code: squint to check the hierarchy holds, read one full paragraph for comfort, and resize the viewport to catch bad wrapping, widows and truncation at real content lengths.
 
-The words themselves (button labels, error messages, empty states) are covered by the `better-writing` skill; this skill covers how text renders.
+The words themselves (button labels, error messages, empty states) are covered by the `better-writing` skill; semantic heading structure by `better-accessibility`; spatial RTL layout and logical CSS properties by `better-layout`; rendered-pair contrast measurement and color remediation by `better-colors`. This skill owns how text renders, wraps, and behaves in mixed-direction content.
 
 **Match the project's styling system.** Before suggesting or writing any fix, check how the codebase styles things and express every change in that system: Tailwind utilities in a Tailwind project, plain declarations in CSS, CSS Modules, styled-components or StyleX. The [cheat sheet](css-cheat-sheet.md) maps each declaration to its Tailwind equivalent. Never introduce a second styling approach just to apply a typography fix.
 
@@ -34,9 +34,9 @@ Use `.woff2` (Brotli compression, broadly supported) on the web. `.woff` is a fa
 
 When a CSS property exists, use it. `font-weight: 650` instead of `font-variation-settings: "wght" 650`, `font-optical-sizing: auto` instead of `"opsz"`, `font-variant-numeric: tabular-nums` instead of `font-feature-settings: "tnum" 1`. Properties keep working when a non-variable fallback renders. Reserve the raw-tag properties for custom axes (`"GRAD" 80`) and niche features (`"ss01" 1`) that have no property of their own.
 
-### 3. No Fake Weights
+### 3. Load Intended Weights and Styles
 
-When a weight or style is not loaded, the browser synthesizes it. That is a safety mechanism, not a feature. Set `font-synthesis: none` so missing files fail visibly instead of rendering a faked bold or italic.
+Browsers may synthesize a requested weight or style that the active family does not provide. Prefer loading the faces the design actually uses. Set `font-synthesis: none` only after verifying that every required bold, italic, small-cap, superscript, and subscript form remains visually distinct across the complete fallback stack; disabling synthesis is not a diagnostic and must not erase emphasis.
 
 ### 4. Fewer Fonts, Sizes and Weights
 
@@ -48,7 +48,7 @@ Define a small set of sizes and deviate from it as little as possible. Hard-code
 
 ### 6. Heading Sizes Descend with Level
 
-Map each heading level used on a page to a descending step of the type scale: a lower level must never render larger than a higher one on the same page. Adjacent levels may share a size toward the small end of the scale as long as weight or spacing keeps them distinct. Pick the tag from the document outline and control the size with CSS; never skip levels or reach for an `h4` because it "looks right".
+Within a coherent page hierarchy, map heading levels to descending steps of the type scale: a visually subordinate heading should not accidentally overpower its parent. Adjacent levels may share a size toward the small end of the scale as long as weight or spacing keeps them distinct. Pick semantic heading elements according to `better-accessibility`; this skill controls only their visual treatment.
 
 ### 7. Line-Height by Role
 
@@ -88,19 +88,19 @@ iOS Safari zooms the whole page when an input's text is smaller than `16px`. Kee
 
 ### 16. Size and Contrast Floors
 
-Body text `16px` (the web default and the right reading size). UI text can go smaller: `14px` for inputs and menus (inputs still need `16px` on mobile, see principle 15), `13px` for captions, rarely below `12px`. WCAG AA: `4.5:1` contrast for regular text, `3:1` for large text (`24px` and up, or `18.5px`+ bold). When text fails these floors, report the failing pair and its ratio; don't change the project's colors unless asked.
+Start long-form body text near the browser default of `16px`, then judge it in the actual typeface, measure, platform, and product density. UI text can go smaller: `14px` is a useful starting point for inputs and menus (inputs still need `16px` on mobile, see principle 15), `13px` for captions, rarely below `12px`. When text appears low-contrast, use `better-colors` to measure the rendered pair and `better-accessibility` to classify the requirement; do not change colors unless asked.
 
 ### 17. Font Smoothing on the Root
 
 On macOS text renders heavier than intended. Apply `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` (both covered by Tailwind's `antialiased`) once on the root layout so they cover all text.
 
-### 18. Logical Properties for Direction
+### 18. Language and Bidi Behavior
 
-To support right-to-left content, use direction-agnostic properties: `margin-inline-start` instead of `margin-left`, `text-align: start` instead of `left`. Set `lang` so browsers pick the right quotes and hyphenation, and `dir="rtl"` where needed.
+Set `lang` so browsers and assistive technology choose the right pronunciation, quotes, and hyphenation. Set `dir` at the document or content boundary where direction changes, preserve digit order, and use `<bdi>` for isolated mixed-direction values when needed. Spatial mirroring and logical CSS properties belong to `better-layout`.
 
-### 19. Style the Selection, Disable It Where It Distracts
+### 19. Keep Useful Text Selectable
 
-`::selection` is a subtle way to embed brand in the reading experience; keep the combination legible. Use `user-select: none` on button labels where copying is unlikely and selection feels distracting, and make sure `cmd+A` only grabs text the user expects to copy. In cross-platform apps that feel closer to native, disable selection for the interface and keep it only on content worth copying.
+`::selection` can carry brand into the reading experience when the selected combination stays legible. Keep text selectable by default. Use `user-select: none` only on a specific draggable or gesture-driven surface where accidental selection demonstrably interferes with the interaction; never disable selection across the interface or merely because a button label can be highlighted.
 
 ## Common Mistakes
 
@@ -109,10 +109,10 @@ To support right-to-left content, use direction-agnostic properties: `margin-inl
 | `.ttf`/`.otf` served on the web | Convert to `.woff2` |
 | `font-variation-settings: "wght"` for weight | `font-weight` (works with non-variable fallbacks) |
 | `font-feature-settings: "tnum" 1` | `font-variant-numeric: tabular-nums` |
-| Browser-faked bold or italic | Load the file, set `font-synthesis: none` |
+| Synthesized face differs from the intended design | Load the required face; disable only the verified synthesis mode without erasing emphasis |
 | Hard-coded one-off font sizes | Use the type scale |
-| `h3` rendered larger than `h2` on the same page | Map heading levels to descending scale steps |
-| Heading tag picked for its size, skipping levels | Level from the document outline, size via CSS |
+| Child heading visually overpowers its parent | Map that section's hierarchy to descending scale steps |
+| Heading element picked for its default size | Choose semantics with `better-accessibility`, then set the visual size in CSS |
 | `line-height: 24px` on scalable text | Unitless value (`1.5`) |
 | Full-width paragraphs | Cap around 60–75 characters per line |
 | Orphan on the last line of a paragraph | `text-wrap: pretty` |
@@ -123,19 +123,22 @@ To support right-to-left content, use direction-agnostic properties: `margin-inl
 | Justified text in an interface | `text-align: start`; reserve justify for specific editorial layouts |
 | Underline cuts through descenders | `text-decoration-skip-ink: auto`, `from-font` metrics |
 | Inputs below `16px` zoom on iOS | `text-base sm:text-sm` |
-| `margin-left` in RTL-capable UI | `margin-inline-start` |
-| Selectable button labels in native-feel UI | `user-select: none`, keep selection on real content |
+| Root layout omits font smoothing | Apply `antialiased` once at the root |
+| Mixed-direction value renders in the wrong order | Set the correct `lang`/`dir`; isolate the value with `<bdi>` when needed |
+| Selection disabled across application chrome | Restore selection; suppress it only on a specific interaction that conflicts with dragging or gestures |
 | Extra-info hint with no visual cue | Dotted underline via `text-decoration-style: dotted` |
 | Thin/Light weight on `14px` UI text | Weight `400`+ below `18px`; thin weights are display-only |
 | `leading-none` on a three-line card description | At least `1.4` on any text that wraps to 3+ lines |
 
 ## Review Output Format
 
-Present every review in two parts.
+Use this format only when the user asks for a standalone typography review. When `better-interface` orchestrates the review, provide domain evidence and findings to that skill and let its output format, severity scale, consolidation rules, cap, and verdict take precedence.
+
+Present the standalone review in two parts.
 
 ### Findings
 
-Group findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Include every change made or proposed, not a subset. Never use separate "Before:" / "After:" lines.
+Group all confirmed findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Never use separate "Before:" / "After:" lines.
 
 - **Severity**: `HIGH` makes text unreadable, unavailable, or structurally misleading; `MEDIUM` harms hierarchy, wrapping, or scanning; `LOW` is isolated typographic polish.
 - **Location**: cite `path/to/file:line`. If the artifact has no source files, cite the exact screen and component instead.

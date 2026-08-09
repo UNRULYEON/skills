@@ -50,7 +50,7 @@ Keyboard characters are not always the best characters:
 ## Internationalization
 
 - Set the `lang` attribute so browsers choose the right quotes, hyphenation and pronunciation.
-- Use `dir="rtl"` for right-to-left content, and logical properties (`margin-inline-start`, `text-align: start`) instead of physical left/right; the full property table lives in the `better-layout` skill.
+- Set `dir` at the document or content boundary where direction changes. Spatial mirroring and the logical-property table live in `better-layout`.
 
 Two refinements for mixed-direction text:
 

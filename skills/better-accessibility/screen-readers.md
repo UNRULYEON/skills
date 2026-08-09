@@ -45,9 +45,10 @@ Live regions announce content that changes without a page load: toasts, validati
 | `role="status"` (= `aria-live="polite"` + `aria-atomic="true"`) | Waits for a pause | Toasts, "Saved", result counts, loading updates |
 | `role="alert"` (= `aria-live="assertive"` + `aria-atomic="true"`) | Interrupts immediately | Errors and urgent problems only |
 
-The rules that make them actually work:
+Rules for reliable announcements:
 
-- The region must exist **empty in the DOM on load**; inject the message text afterwards. Inserting the region together with its content usually isn't announced.
+- For repeated polite updates, keep a stable empty region in the DOM before changing its text. Inserting a new polite region together with its content is inconsistently announced.
+- Dynamically inserted `role="alert"` content is commonly announced, but behavior varies; use it only for urgent errors not tied to a control and test the target browser/screen-reader combinations.
 - Default to polite. Overusing `assertive` is the most common live-region mistake; it interrupts whatever the user was reading.
 - Keep messages short and self-contained; `aria-atomic="true"` re-reads the whole region on change.
 - Don't move focus to a toast; announce it and leave focus where the user is working. Give toasts a generous timeout or a dismiss button, and never put the only path to an action inside an auto-dismissing toast.

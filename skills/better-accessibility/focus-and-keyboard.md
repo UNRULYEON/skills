@@ -6,51 +6,45 @@ Focus rings, skip links, tabindex, focus trapping, and the APG keyboard patterns
 
 Style `:focus-visible`, not bare `:focus`. The browser shows `:focus-visible` for keyboard and assistive-tech focus but suppresses it for mouse clicks, where focus is already obvious. Never write `outline: none` or `focus:outline-none` without a visible replacement; that removes keyboard navigation for sighted keyboard users.
 
-Always respect the focus color the user has set. The platform focus ring (the color the user configured in their OS and browser) only renders with the default `outline-style: auto`; a custom `outline: 2px solid` does *not* pick it up (with no color set, it renders `currentColor`). So the preference order is:
+Prefer the browser's unmodified focus indicator: it adapts to platform and forced-color settings without the author predicting every background. Adding only `outline-offset` generally preserves that indicator. A custom `outline: 2px solid` with no color renders `currentColor`; that is not automatically accessible because the outline may cross colors different from the text's own background. So the preference order is:
 
 ```css
-/* Best: keep the user's own ring, just give it breathing room */
+/* Best: keep the browser ring, just give it breathing room */
 :focus-visible {
   outline-offset: 2px;
 }
 
-/* Custom ring when the design requires one: no color set, so it renders
-   currentColor and adapts to the text color instead of a hardcoded brand color */
+/* Custom ring when the design requires one: use the project's verified token */
 :focus-visible {
-  outline: 2px solid;
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-}
-
-/* Bad: hardcoded brand color overrides the user's choice */
-:focus-visible {
-  outline: 2px solid #2563eb;
 }
 ```
 
 ```tsx
-// Tailwind (v4: outline-2 sets both solid style and 2px width), no color utility
-<button className="focus-visible:outline-2 focus-visible:outline-offset-2">
+// Tailwind: use the project's focus token or established focus-ring utility
+<button className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]">
   Save
 </button>
 ```
 
-A custom ring needs at least `3:1` contrast against the colors it sits on (WCAG 1.4.11 Non-text Contrast covers focus indicators).
+A custom focus indicator must meet the applicable project/WCAG target for visible area and change of contrast. Inspect the whole perimeter against every adjacent color it crosses, including component fills, page surfaces, images, gradients, and hover/selected states. A token, brand color, or `currentColor` is acceptable only when that rendered check passes.
 
-In `forced-colors: active` (Windows High Contrast), outline colors map to the system `Highlight` palette automatically, one more reason not to fight the defaults.
+In `forced-colors: active` (Windows High Contrast), keep the default color adjustment or explicitly use a system color such as `Highlight`; never freeze the authored color with `forced-color-adjust: none` unless the control remains perceivable.
 
 Group focus styles with `:focus-within` when a wrapper should light up while an inner input has focus (e.g. a search box with an icon inside the border).
 
 ## Skip link
 
-The first focusable element on the page is a "Skip to content" link targeting `<main id="main">`. Visually hidden until focused:
+When repeated navigation or other repeated chrome precedes the primary content, the first focusable element is a "Skip to content" link targeting `<main id="main">`. Visually hide it until focused:
 
 ```css
 .skip-link {
   position: absolute;
-  left: -999px;
+  inset-inline-start: -999px;
 }
 .skip-link:focus {
-  left: 16px;
+  inset-inline-start: 16px;
   top: 16px;
 }
 ```

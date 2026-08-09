@@ -9,6 +9,8 @@ Layout communicates before a single word is read: position, spacing, and alignme
 
 Hit-area sizes and focus behavior are covered by the `better-accessibility` skill; visual polish (radius, shadows, animation) by the `better-ui` skill; line length and text spacing by the `better-typography` skill.
 
+Treat the numeric values below as starting points for interfaces without an established density or spacing system. Preserve deliberate platform chrome, compact professional tools, and project tokens when they remain usable under hit-area, zoom, localization, and viewport stress tests.
+
 ## Quick Reference
 
 | Category | When to Use |
@@ -28,7 +30,7 @@ Interactive elements must look interactive: a background shape, a border, or a c
 
 ### 3. Align to Shared Edges
 
-Pick alignment edges and stick to them; every stray edge reads as noise. Indent exactly one step (`16px`) to signal subordination. Use logical properties (`padding-inline-start`, `margin-inline-end`), never physical left/right, so RTL mirrors for free.
+Pick alignment edges and stick to them; every stray edge reads as noise. Use one project spacing step for each level of subordination (`16px` is a useful default). Use logical properties (`padding-inline-start`, `margin-inline-end`) for direction-dependent layout; reserve physical left/right for genuinely physical geometry.
 
 ### 4. Order by Importance
 
@@ -36,15 +38,15 @@ The most important content sits near the top and the leading edge; reading order
 
 ### 5. Hint at Hidden Content
 
-Progressive disclosure needs a visible affordance: let the next item peek `16–32px` past the scroll edge, or show a disclosure control. Content hidden with zero cue may as well not exist.
+Progressive disclosure needs a visible affordance. Use the project's established cue; without one, let the next item peek `16–32px` past the scroll edge or show a disclosure control. Content hidden with zero cue may as well not exist.
 
 ### 6. Breathing Room Between Targets
 
-Keep at least `12px` between adjacent bordered or filled controls, and `24px` of clearance around borderless text- and icon-only controls. Hit-area sizes themselves are covered by the `better-accessibility` skill.
+Without an established density system, start with `12px` between adjacent bordered or filled controls and `24px` of clearance around borderless text- and icon-only controls. Compact layouts may use less when `better-accessibility` hit areas do not overlap and the controls remain visually distinct.
 
 ### 7. Inset Buttons from the Edges
 
-No edge-to-edge, full-width buttons pressed against the viewport. Keep buttons inside the layout margins (at least `16px` inline margin on mobile) with a visible radius.
+In content layouts, keep full-width buttons inside the layout margins (start near `16px` inline on mobile) with a visible radius. Edge-to-edge actions are acceptable when they intentionally follow established platform or application chrome, account for safe areas, and remain distinguishable from system UI.
 
 ### 8. Content Bleeds, Controls Float
 
@@ -56,7 +58,7 @@ Breakpoints come from the content, not device presets. Keep the expanded layout 
 
 ### 10. Plan for Growth and Clipping
 
-Translated strings run 30–40% longer: no fixed widths or heights on text containers, and let rows wrap. Never park critical actions where resizing or scrolling clips them; keep primary actions in stable chrome.
+Plan for substantial and language-dependent string growth rather than relying on a universal percentage: no fixed widths or heights on text containers, and let rows wrap. Never park critical actions where resizing or scrolling clips them; keep them reachable in the normal flow or stable chrome appropriate to the product.
 
 ## Common Mistakes
 
@@ -64,20 +66,22 @@ Translated strings run 30–40% longer: no fixed widths or heights on text conta
 | --- | --- |
 | Separator line where spacing would do | Remove the line, double the gap between groups |
 | `margin-left` / `padding-right` in a localizable layout | `margin-inline-start` / `padding-inline-end` |
-| Full-width edge-to-edge button | Inset within layout margins (`mx-4` minimum on mobile) |
+| Content-layout button accidentally touches the viewport | Inset within the project margins; preserve intentional platform chrome |
 | Carousel/scroller that looks complete | Let the next item peek `16–32px` past the edge |
-| Adjacent controls with no gap | `12px` minimum between bordered controls, `24px` around borderless ones |
+| Adjacent controls merge or expanded hit areas overlap | Increase the gap using the project scale; use `12px`/`24px` as starting points |
 | Breakpoints at 768/1024 because they're the defaults | Break where the content actually stops fitting |
-| Fixed-width text container sized to English strings | `max-width` + wrapping; translations run 30–40% longer |
+| Fixed-width text container sized to one language | `max-width` + wrapping; test pseudo-localization and representative locales |
 | Primary action at the clip-prone bottom of a pane | Sticky positioning or stable chrome with safe-area padding |
 
 ## Review Output Format
 
-Present every review in two parts.
+Use this format only when the user asks for a standalone layout review. When `better-interface` orchestrates the review, provide domain evidence and findings to that skill and let its output format, severity scale, consolidation rules, cap, and verdict take precedence.
+
+Present the standalone review in two parts.
 
 ### Findings
 
-Group findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Include every change made or proposed, not a subset. Never use separate "Before:" / "After:" lines.
+Group all confirmed findings by principle. Use a markdown table with **Severity**, **Location**, **Before**, **After**, and **Why** columns. Never use separate "Before:" / "After:" lines.
 
 - **Severity**: `HIGH` blocks content or an action at a supported viewport; `MEDIUM` harms hierarchy, reading order, or adaptability; `LOW` is isolated alignment or spacing polish.
 - **Location**: cite `path/to/file:line`. If the artifact has no source files, cite the exact screen and component instead.

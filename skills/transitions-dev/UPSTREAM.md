@@ -3,7 +3,7 @@ provider: Jakubantalik
 local_name: transitions-dev
 upstream_repo: Jakubantalik/transitions.dev
 upstream_path: skills/transitions-dev
-pinned_ref: 047d036a79cc2ddecd868e7f1e3aa04b495644b2
+pinned_ref: 67d5c679305a8a1eb7507d56c3f143c0b47602df
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync transitions-dev --write`.
 
 - Source repo: [Jakubantalik/transitions.dev](https://github.com/Jakubantalik/transitions.dev)
 - Source path: `skills/transitions-dev`
-- Pinned commit: [`047d036a79cc2ddecd868e7f1e3aa04b495644b2`](https://github.com/Jakubantalik/transitions.dev/commit/047d036a79cc2ddecd868e7f1e3aa04b495644b2)
+- Pinned commit: [`67d5c679305a8a1eb7507d56c3f143c0b47602df`](https://github.com/Jakubantalik/transitions.dev/commit/67d5c679305a8a1eb7507d56c3f143c0b47602df)
 - Update policy: latest

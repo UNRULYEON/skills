@@ -28,7 +28,7 @@ An icon next to text should carry the same optical weight as the text, or the pa
 
 Two related consistency rules:
 
-- **One stroke weight per icon set.** Every icon on a surface uses the same stroke width; mixing icon libraries with different stroke conventions on one toolbar is immediately visible.
+- **One optical strategy per surface.** Do not mix icon libraries with incompatible stroke conventions on one toolbar. If the chosen library intentionally supports stroke variants, match them to adjacent text as above; otherwise preserve the set's native stroke and use size or color for emphasis.
 - **Size icons relative to the text's cap height**, typically `1em`–`1.25em` when inline with text, so the pair scales together.
 
 ## One SVG, Recolored per State
