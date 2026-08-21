@@ -1,5 +1,5 @@
 ---
-name: make-responsive
+name: ui-sh-make-responsive
 description: Adapt existing UI across mobile, tablet, and desktop breakpoints.
 ---
 

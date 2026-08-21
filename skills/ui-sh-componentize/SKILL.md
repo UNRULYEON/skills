@@ -1,5 +1,5 @@
 ---
-name: componentize
+name: ui-sh-componentize
 description: Extract and organize existing UI into reusable components with thoughtful APIs.
 ---
 

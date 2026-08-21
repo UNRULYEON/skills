@@ -1,5 +1,5 @@
 ---
-name: brand-kit
+name: ui-sh-brand-kit
 description: Generate a complete visual identity and marketing-site mockup board from a product idea.
 ---
 

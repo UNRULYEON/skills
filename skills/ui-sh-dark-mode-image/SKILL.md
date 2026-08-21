@@ -1,5 +1,5 @@
 ---
-name: dark-mode-image
+name: ui-sh-dark-mode-image
 description: Create dark-mode variants of raster images for dark UI contexts.
 ---
 

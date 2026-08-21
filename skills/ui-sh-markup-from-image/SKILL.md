@@ -1,5 +1,5 @@
 ---
-name: markup-from-image
+name: ui-sh-markup-from-image
 description: Convert screenshots, Figma exports, mockups, or wireframes into semantic unstyled markup.
 ---
 

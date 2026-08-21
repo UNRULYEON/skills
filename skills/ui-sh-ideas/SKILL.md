@@ -1,5 +1,5 @@
 ---
-name: ideas
+name: ui-sh-ideas
 description: Compare multiple UI options in-browser with the ui.sh picker.
 ---
 

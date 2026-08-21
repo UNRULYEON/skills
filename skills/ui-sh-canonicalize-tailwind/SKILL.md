@@ -1,5 +1,5 @@
 ---
-name: canonicalize-tailwind
+name: ui-sh-canonicalize-tailwind
 description: Sort, normalize, deduplicate, and resolve conflicting Tailwind utility classes.
 ---
 

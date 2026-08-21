@@ -1,5 +1,5 @@
 ---
-name: add-dark-mode
+name: ui-sh-add-dark-mode
 description: Add dark mode with colors, shadows, and surfaces handled the way a designer would.
 ---
 
