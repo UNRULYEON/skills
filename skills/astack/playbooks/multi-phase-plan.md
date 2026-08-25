@@ -9,7 +9,7 @@
 3. State the target end state up front and converge each phase toward it
    directly, rather than adding temporary compatibility scaffolding meant to
    be deleted later.
-   ([bias toward deletion](../principles.md#bias-toward-deletion))
+   ([outcome-oriented execution](../principles.md#outcome-oriented-execution))
 4. Verify each phase against the real artifact before starting the next.
    ([prove it against the real artifact](../principles.md#prove-it-against-the-real-artifact))
 5. Report progress phase by phase: what landed, what's next, and what would
