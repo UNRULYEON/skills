@@ -39,9 +39,15 @@ Apply these throughout the task, not just at the step that names them.
 | [bias toward deletion](principles.md#bias-toward-deletion) | smallest change that solves the problem; prefer removing code to adding it |
 | [subtract before you add](principles.md#subtract-before-you-add) | clear dead weight and stub references before building on top |
 | [data structures first](principles.md#data-structures-first) | settle core types and sequencing before writing logic |
+| [redesign from first principles](principles.md#redesign-from-first-principles) | design as if the new requirement had been there from day one, instead of bolting it on |
+| [exhaust the design space](principles.md#exhaust-the-design-space) | build 2-3 competing versions and compare them, rather than debating in the abstract |
+| [build the lever](principles.md#build-the-lever) | build the tool that does or proves repeated work, instead of doing it by hand |
+| [outcome-oriented execution](principles.md#outcome-oriented-execution) | converge on the target architecture directly; don't preserve throwaway compatibility scaffolding |
 | [minimize reader load](principles.md#minimize-reader-load) | collapse one-caller wrappers, shrink hidden state, cut layers between question and answer |
+| [model the domain](principles.md#model-the-domain) | encode the domain's states and transitions in a structure, not scattered conditionals |
 | [boundary discipline](principles.md#boundary-discipline) | concentrate guards at system boundaries; trust internal types; keep core logic pure |
 | [illegal states unrepresentable](principles.md#illegal-states-unrepresentable) | parse external data at the boundary; don't lie to the type system |
+| [make operations idempotent](principles.md#make-operations-idempotent) | converge to the same end state regardless of partial prior runs |
 | [prove it against the real artifact](principles.md#prove-it-against-the-real-artifact) | run the feature, read the actual value, inspect the diff — not a proxy or "it compiles" |
 | [fix root causes](principles.md#fix-root-causes) | reproduce first, ask why until you reach it; resist guards that silence a crash instead of fixing it |
 | [sequence into verifiable units](principles.md#sequence-into-verifiable-units) | break work into steps that each end in a checkable state; verify each before the next |
