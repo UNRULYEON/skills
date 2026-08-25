@@ -1,3 +1,8 @@
+---
+name: react-component-design
+description: Best practices for designing React components that are flexible, composable, and maintainable. Use when designing or reviewing a reusable component's public API — compound components, the asChild pattern, controlled vs uncontrolled state, prop naming conventions, composition over configuration, or a component's customization surface. Triggers on compound component, asChild, prop API, controlled component, uncontrolled component, render props vs children, component composition, props explosion, component library API design.
+---
+
 # Component Design
 
 Best practices for designing React components that are flexible, composable, and maintainable.
@@ -380,3 +385,7 @@ export { Card, CardHeader, CardContent } from "./card";
 ### Premature Abstraction
 
 Don't create a component until you've copy-pasted it 2-3 times. Wait until patterns emerge.
+
+<!-- Originally drawn from Emil Kowalski's design engineering practices; this
+     content was local to this repo (no upstream pin) before being carved
+     out of the retired emil-design-engineering skill. -->
