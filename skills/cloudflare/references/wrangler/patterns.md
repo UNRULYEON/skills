@@ -21,11 +21,34 @@ wrangler dev --inspector-port 9229  # Enable debugging
 
 Debug: chrome://inspect → Configure → localhost:9229
 
+Bindings default to local simulation. Use `remote: true` on a binding to hit
+the real resource while running locally instead:
+
+```jsonc
+{
+  "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "my-bucket", "remote": true }],
+  "ai": { "binding": "AI", "remote": true }
+}
+```
+
+Recommended remote bindings: AI (required — Workers AI doesn't run locally),
+Vectorize, Browser Rendering, mTLS, Images.
+
 ## Secrets
 
+> **Security**: never pass a secret value as a command argument or pipe it via
+> `echo` — both land in shell history. Use the interactive prompt (preferred),
+> a file (useful for PEM keys and CI), or `secret bulk` for many at once.
+
 ```bash
-# Production
-echo "secret-value" | wrangler secret put SECRET_KEY
+# Production — interactive prompt (preferred, wrangler asks for the value securely)
+wrangler secret put SECRET_KEY
+
+# From a file
+wrangler secret put PRIVATE_KEY < path/to/private-key.pem
+
+# Bulk from a JSON file (do not commit this file)
+wrangler secret bulk secrets.json
 
 # Local: use .dev.vars (gitignored)
 # SECRET_KEY=local-dev-key
