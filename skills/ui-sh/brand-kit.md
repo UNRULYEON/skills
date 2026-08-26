@@ -1,8 +1,3 @@
----
-name: ui-sh-brand-kit
-description: Generate a complete visual identity and marketing-site mockup board from a product idea.
----
-
 # Brand Kit
 
 ## Overview
@@ -58,4 +53,4 @@ If the user attaches images, use them as design inspiration only:
 - Keep the design-system rail compact but legible at full 4K size, preserving only font names/typeface directions, dominant color values, supporting color values, palette hierarchy, and short color role labels.
 - In the rail, distinguish dominant/load-bearing colors from infrequent supporting accents. Dominant colors should appear larger, grouped as the main palette, and labeled by role; supporting/accent/signal colors should appear as smaller chips.
 - Do not put logo notes, spacing scales, border radius, grid specs, motion notes, component inventories, component state details, icon notes, elevation/shadow specs, or arbitrary brand copy in the design-system rail.
-- Do not create extra files or resource directories for this wrapper skill.
+- Do not create extra files or resource directories for this workflow.

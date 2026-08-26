@@ -1,8 +1,3 @@
----
-name: ui-sh-componentize
-description: Extract and organize existing UI into reusable components with thoughtful APIs.
----
-
 # Componentize
 
 Use this when the user wants to componentize, extract, or organize UI code into reusable components.

@@ -1,8 +1,3 @@
----
-name: ui-sh-make-responsive
-description: Adapt existing UI across mobile, tablet, and desktop breakpoints.
----
-
 # Make Responsive
 
 Use this when the user wants an existing desktop-oriented UI to work well across mobile, tablet, and desktop breakpoints.

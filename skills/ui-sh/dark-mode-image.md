@@ -1,27 +1,20 @@
----
-name: ui-sh-dark-mode-image
-description: Create dark-mode variants of raster images for dark UI contexts.
----
-
 # Dark Mode Image
 
 Use this when the user wants to adapt a standalone source image into a dark-mode-suitable version.
 
-## Activation
-
-### Use For
+## Use For
 
 - creating a dark-mode version of an image, illustration, screenshot, photo, product mockup, decorative background, or texture
 - adapting an existing raster image so it presents correctly on a dark background
 - generating a dark-mode image variant for use in a dark-mode UI
 
-### Do Not Use For
+## Do Not Use For
 
-- adding dark mode to a page, section, component, or site
+- adding dark mode to a page, section, component, or site — see `add-dark-mode.md`
 - SVG-only assets
 - general image styling in a UI without dark-mode conversion
 
-When the `add-dark-mode` skill identifies raster images that need dark-mode variants, use this skill for that image-generation work. This skill is the required handoff point between dark-mode UI work and raster image generation.
+When `add-dark-mode.md` identifies raster images that need dark-mode variants, use this file for that image-generation work. This is the required handoff point between dark-mode UI work and raster image generation.
 
 ## Load First
 

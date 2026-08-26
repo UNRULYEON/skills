@@ -1,8 +1,3 @@
----
-name: ui-sh-ideas
-description: Compare multiple UI options in-browser with the ui.sh picker.
----
-
 # Ideas
 
 Use this when the user wants to use the ui.sh picker to see and pick between multiple UI implementations while previewing them in the browser.
@@ -30,7 +25,7 @@ Use this when the user wants to use the ui.sh picker to see and pick between mul
 
 ## Progress Updates
 
-While running this skill, keep the user informed so longer runs do not look stuck.
+While running this workflow, keep the user informed so longer runs do not look stuck.
 
 - Send a short (one line) status update before each major phase.
 - Keep updates concrete and lightweight: what you are doing now, not verbose logs.
@@ -49,7 +44,7 @@ Suggested phase updates:
 
 ## Start
 
-- If this skill has already been used in the same conversation/project, run an iteration reset pass first.
+- If this workflow has already been used in the same conversation/project, run an iteration reset pass first.
 - Use the currently selected/visible UI as the baseline.
 - Remove lingering artifacts from earlier rounds: old unselected branches, stale `hidden` attributes, and picker wrappers/attributes that are no longer needed.
 - Keep one toolbar script tag if the user is still comparing options; remove duplicates only.

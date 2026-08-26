@@ -1,8 +1,3 @@
----
-name: ui-sh-markup-from-image
-description: Convert screenshots, Figma exports, mockups, or wireframes into semantic unstyled markup.
----
-
 # Markup From Image
 
 Use this when the user wants to turn a UI image into semantic, unstyled HTML or JSX markup as a scaffold before styling.

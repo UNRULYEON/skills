@@ -1,6 +1,6 @@
 # UI Design Guidelines
 
-Use this when designing or building new UI with the top-level `design` skill, or when a workflow tells you to load design guidance before editing UI code.
+Use this when designing or building new UI with `design.md`, or when another file here tells you to load design guidance before editing UI code.
 
 ## Load Contract
 
@@ -11,7 +11,7 @@ Use this when designing or building new UI with the top-level `design` skill, or
 
 ## General Design Principles
 
-- Every layout must adapt from mobile to desktop — use responsive breakpoint classes to adjust the design at different screen sizes; see [Responsive Design](./guidelines/responsive-design.md) for detailed rules
+- Every layout must adapt from mobile to desktop — use responsive breakpoint classes to adjust the design at different screen sizes; see [`make-responsive.md`](./make-responsive.md) for the full breakpoint and container-query ruleset
 
 ## Rule Files
 
@@ -24,7 +24,7 @@ Follow these rules when designing or building UI. Each rule file covers a specif
 - [Colors](./guidelines/colors.md) — brand colors, accent colors, color palette selection, and default color choices
 - [Copywriting](./guidelines/copywriting.md) — punctuation, periods, headings, taglines, subtitles, descriptions, and list items
 - [Custom Fonts](./guidelines/custom-fonts.md) — loading custom fonts via `<link>` tags or `@import url()`, registering fonts in `@theme` with `--font-*`, font-feature-settings, and font-variation-settings
-- [Dark Mode](./guidelines/dark-mode.md) — dark theme styling, contrast ratios, colored panels, card backgrounds, shadow removal, decorative elements, heading colors, dark-mode image handoff, and inline/external SVG dark-mode handling
+- [Dark Mode](./add-dark-mode.md) — dark theme styling, contrast ratios, colored panels, card backgrounds, shadow removal, decorative elements, heading colors, dark-mode image handoff, and inline/external SVG dark-mode handling
 - [Description Lists](./guidelines/description-lists.md) — `<dl>`, `<dt>`, and `<dd>` styling, term/detail contrast and font weight hierarchy
 - [Dashboards](./guidelines/dashboards.md) — dashboard layouts, stat grids, KPI cards, metric cards, admin panels, analytics views, and any section displaying key statistics, charts, or summary data
 - [Feature Lists](./guidelines/feature-lists.md) — feature grids, feature sections, benefit lists, and any section that lists multiple features with titles and descriptions
@@ -45,7 +45,7 @@ Follow these rules when designing or building UI. Each rule file covers a specif
 - [Placeholder Content](./guidelines/placeholder-content.md) — dummy logos, placeholder avatars, app screenshots, wallpapers, and the assets API for generating realistic placeholder content
 - [Prose Content](./guidelines/prose-content.md) — styling raw HTML from markdown, CMS, or database content where Tailwind classes can't be applied to individual elements; replaces the `@tailwindcss/typography` plugin with a custom `.prose` class
 - [Pricing Cards](./guidelines/pricing-cards.md) — pricing tiers, pricing tables, plan cards, emphasized/popular plan styling, and button alignment across pricing columns
-- [Responsive Design](./guidelines/responsive-design.md) — responsive breakpoints, container queries, `@container` placement, and mobile-to-desktop layout adaptation
+- [Responsive Design](./make-responsive.md) — responsive breakpoints, container queries, `@container` placement, and mobile-to-desktop layout adaptation
 - [SVG](./guidelines/svg.md) — inline SVG elements, `xmlns` attributes, SVG color styling (`fill`, `stroke`, `currentColor`), and SVG markup conventions used anywhere in HTML/JSX
 - [Section Layout](./guidelines/section-layout.md) — left-aligned vs centered section layouts, content width constraints, and aligning containers across stacked page sections
 - [Shadows](./guidelines/shadows.md) — box shadows on cards, modals, popovers, dropdowns, and elevated elements, including border pairing rules
