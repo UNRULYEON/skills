@@ -4,20 +4,6 @@
 
 provider: cloudflare
 skills:
-  - local_name: cloudflare
-    upstream_repo: cloudflare/skills
-    upstream_path: skills/cloudflare
-    pinned_ref: 30553f89ae1ef1e3c2917cd09d72dac992bb4e9a
-    update_policy: latest
-    status: active
-    owner: amar
-  - local_name: cloudflare-wrangler
-    upstream_repo: cloudflare/skills
-    upstream_path: skills/wrangler
-    pinned_ref: 30553f89ae1ef1e3c2917cd09d72dac992bb4e9a
-    update_policy: latest
-    status: active
-    owner: amar
   - local_name: cloudflare-workers-best-practices
     upstream_repo: cloudflare/skills
     upstream_path: skills/workers-best-practices

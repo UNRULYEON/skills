@@ -78,8 +78,27 @@ wrangler vectorize create NAME --dimensions N --metric cosine
 wrangler hyperdrive create NAME --connection-string "..."
 wrangler workflows create NAME
 wrangler constellation create NAME
-wrangler pages project create NAME
-wrangler pages deployment create --project NAME --branch main
+```
+
+### Workers AI
+```bash
+wrangler ai models             # List available models
+wrangler ai finetune list      # List finetunes
+```
+Workers AI always runs remotely and incurs usage charges even in local dev.
+
+### Containers
+```bash
+wrangler containers build -t my-app:latest . --push   # Build and push in one command
+wrangler containers list
+wrangler containers registries configure <DOMAIN> --dockerhub-username "$USER"  # Never hardcode registry credentials
+```
+
+### Pages
+```bash
+wrangler pages project create my-site
+wrangler pages deploy ./dist --branch main
+wrangler pages deployment list --project-name my-site
 ```
 
 ### Secrets
@@ -100,6 +119,14 @@ wrangler tail                     # Real-time logs
 wrangler tail --env production    # Tail specific env
 wrangler tail --status error      # Filter by status
 ```
+
+## Best Practices
+
+1. Version-control `wrangler.jsonc` — it's the source of truth for Worker config.
+2. Run `wrangler types` in CI to catch binding mismatches before deploy.
+3. Use `wrangler deploy --dry-run` before a major deploy to validate without shipping.
+4. Never embed secrets in commands — see [patterns.md](./patterns.md) §Secrets.
+5. Test locally first (`wrangler dev`) before deploying.
 
 ## In This Reference
 

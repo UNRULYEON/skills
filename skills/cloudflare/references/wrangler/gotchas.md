@@ -146,6 +146,7 @@ wrangler whoami
 ### Configuration Errors
 ```bash
 wrangler check startup  # Profile Worker startup time and detect scripts exceeding the startup time limit
+wrangler types           # Regenerate bindings after any wrangler.jsonc change — stale types are a common source of "works in dev, breaks in CI"
 ```
 Use wrangler.jsonc with `$schema` for validation.
 
