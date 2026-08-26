@@ -1,30 +1,26 @@
 # Interaction captures
 
-A steps file drives the page after load. Write it to the scratchpad — never into the project — and pass it with `--steps`.
+Chain agent-browser commands inside one `batch --session <name>` call instead of writing a script — every command after `open` sees the page the previous one left it in, and the session stays alive between them.
 
-It default-exports an async function receiving `{ page, capture, viewport }`:
-
-- `page` — the Playwright [`Page`](https://playwright.dev/docs/api/class-page).
-- `capture(label?)` — screenshot at this moment. Labels become the filename suffix (`settings-desktop-menu-open.png`). Unlabelled shots number themselves.
-- `viewport` — `{ name, width, height, isMobile, hasTouch, deviceScaleFactor }`, so one file can branch per viewport.
-
-```js
-export default async function ({ page, capture, viewport }) {
-  await capture("closed");
-
-  if (viewport.isMobile) await page.getByRole("button", { name: "Menu" }).tap();
-  else await page.getByRole("button", { name: "Menu" }).click();
-
-  await page.getByRole("menu").waitFor();
-  await capture("open");
-}
+```bash
+run batch --session settings-desktop-after \
+  "open http://localhost:3000/settings" \
+  "set viewport 1280 720 2" \
+  "wait --load networkidle" \
+  "screenshot $OUT/after/settings-desktop-closed.png" \
+  "find role button --name Menu click" \
+  "wait [role=menu]" \
+  "screenshot $OUT/after/settings-desktop-open.png" \
+  "close"
 ```
 
-With `--steps` and no `--video`, only the moments you call `capture()` are written — call it at least once. With `--video`, the whole run is recorded to an `.mp4` and any `capture()` calls are written alongside it.
+Run the identical sequence against the baseline port for the before half — same commands, same order, only the URL, session name, and output path change.
 
 Rules that keep a run reproducible:
 
-- Reach for elements by role, label, or text — the same selectors survive the next refactor.
-- Wait on a **state** (`waitFor`, `toBeVisible`), never a bare timeout, before shooting.
-- Leave the page in a state the next viewport can start from, or reset it — each viewport gets a fresh context, so this only matters within one steps file.
-- Slow a video down with `page.waitForTimeout` between actions; a 200 ms pause before and after each interaction makes the result watchable.
+- Reach for elements with `find role <role> --name <name> click`, `find text <text> click`, or `find label <label> click` — semantic locators survive the next refactor the way a brittle CSS selector doesn't. Fall back to a CSS or text selector only when no accessible role, label, or text distinguishes the element.
+- Wait on a **state** — `wait <selector>`, `wait --text "<text>"`, `wait --load networkidle` — never a bare `wait <ms>` alone, before shooting. A short `wait <ms>` (100–200ms) is fine as a settle pause *after* a state wait, not instead of one.
+- Every capture that matters gets its own `screenshot` call with a label baked into the path (`-closed`, `-open`) — an unlabelled capture only tells you it ran, not which moment it caught.
+- Leave the page in a state the next viewport's run can start fresh from — each viewport gets its own `batch --session <name>` call and its own browser, so nothing carries over between them.
+
+For a video instead of stills: start `record start <path>.webm` right after the page settles (after the `wait --load` step), run the interaction commands with a short `wait 200` before and after each one so the result is watchable, then `record stop` — no separate `screenshot` calls are needed inside a video run.
