@@ -1,4 +1,4 @@
-Polish rules (transitions-polish) — apply on top of the motion tokens, match on USAGE not the nearest number:
+Polish rules (transitions) — apply on top of the motion tokens, match on USAGE not the nearest number:
 
 DISTANCES (non-resting translate the element animates FROM, settling to 0):
   - 4px Micro: text swap
