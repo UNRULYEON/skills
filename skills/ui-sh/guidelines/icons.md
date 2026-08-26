@@ -14,5 +14,5 @@ Covers: SVG icons, Heroicons, inline checkmarks, icon buttons, icon sizing, and 
 ## Coding Rules
 
 - Use `size-{n} h-lh` on SVG icons to vertically center them with adjacent text; set the `font-size` on a wrapper element instead of using top margins or manual alignment
-- Use `fill-{color}` for filled icons and `stroke-{color}` for stroked icons — never use `text-{color}` with `currentColor` (legacy v2 hack)
+- Use `currentColor` and set color via `text-{color}` — one SVG asset, recolored per state (hover, selected, disabled) from CSS color alone, not separate `fill-{color}`/`stroke-{color}` variants per state (see `better`'s `ui.md` principle 14, if installed)
 - Always add `shrink-0` to icons inside flex containers
