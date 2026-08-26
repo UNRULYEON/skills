@@ -7,7 +7,7 @@ Covers: text sizes, line heights, heading styles, font weights, tracking, text w
 - Never use `text-xs` for body text, paragraph text, or general page content — the smallest acceptable body text size is `text-sm` and only at `sm:` or larger breakpoints; the mobile default must be at least `text-base` (16px)
 - Never use `font-bold` for headings — use `font-semibold` or `font-medium` instead
 - Never add `leading-*` or line-height modifiers to headings — use Tailwind's default line-height (e.g. `text-6xl`, not `text-6xl/tight`)
-- Use `text-balance` on headings; use `text-pretty` on paragraph text
+- Use `text-balance` on headings; use `text-pretty` on paragraph text (the `better` skill's `typography.md` covers the underlying wrapping rationale, if it's installed)
 - Add `tracking-tight` to headings larger than `text-xl` — unless the font is a condensed headline font (tracking is already tight)
 - Never use `uppercase` on eyebrow text unless it uses a monospace font; when using `uppercase` with a monospace font, always add `tracking-wide`
 

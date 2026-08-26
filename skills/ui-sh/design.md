@@ -1,29 +1,22 @@
----
-name: ui-sh-design
-description: Design and build new UI with the complete ui.sh design guideline system.
----
-
 # Design
 
 Use this when the user wants to create new UI that follows the full ui.sh design guideline system.
 
-## Activation
-
-### Use For
+## Use For
 
 - designing new UI, layouts, sections, components, or pages from scratch
 - implementing visually polished Tailwind CSS UI
 - adding a new section or page to an existing UI
 - applying reusable design, markup, and Tailwind authoring rules while building UI
 
-### Do Not Use For
+## Do Not Use For
 
-- UI picker scaffolding only
-- semantic unstyled markup from screenshots, Figma exports, mockups, wireframes, or UI images
-- component extraction or code organization only
-- Tailwind class cleanup only
-- adding dark mode to an existing UI only
-- making an existing desktop-oriented UI responsive only
+- UI picker scaffolding only — see `ideas.md`
+- semantic unstyled markup from screenshots, Figma exports, mockups, wireframes, or UI images — see `markup-from-image.md`
+- component extraction or code organization only — see `componentize.md`
+- Tailwind class cleanup only — see `canonicalize-tailwind.md`
+- adding dark mode to an existing UI only — see `add-dark-mode.md`
+- making an existing desktop-oriented UI responsive only — see `make-responsive.md`
 
 ## Load First
 
@@ -47,7 +40,7 @@ Keep the user informed so longer runs do not look stuck.
 
 ## Rules
 
-- Treat the guideline files in this skill as the source of truth for new UI design work.
+- Treat the guideline files here as the source of truth for new UI design work.
 - Err on the side of loading too many applicable guideline files rather than too few.
 - Preserve user constraints unless a guideline explicitly requires asking about a design conflict.
 
