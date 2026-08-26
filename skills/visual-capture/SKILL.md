@@ -68,7 +68,7 @@ run() {
 
 Use `run` in place of `agent-browser` for every command below. A persistent install (`npm install -g agent-browser`, `brew install agent-browser`) is faster on repeat runs but is the user's call, not yours — default to the ad hoc runner, which leaves nothing behind.
 
-On first use, agent-browser downloads its own Chrome build (Chrome for Testing) into its own cache — once per machine, outside the project. Let that finish rather than retrying if the first command is slow.
+agent-browser needs its own Chrome build (Chrome for Testing), fetched into its own cache — once per machine, outside the project. The first real command often triggers that download on its own; if a command instead errors about a missing browser, run `agent-browser install` (through `run` if using the ad hoc runner) once, then retry.
 
 The CLI surface is large. If a command or flag below doesn't behave as documented, run `agent-browser <command> --help` to confirm current syntax before working around it.
 
@@ -89,15 +89,17 @@ Point `$VISUAL_CAPTURE_OUT` at the scratchpad to keep a session's captures toget
 
 Give each side of a pair its own session name so the two browsers never collide, and drive the whole capture as one `batch` call:
 
+`--session` is a global option and goes **before** the subcommand, not after it:
+
 ```bash
-run batch --session settings-desktop-before \
+run --session settings-desktop-before batch \
   "open http://localhost:$PORT/settings" \
   "set viewport 1280 720 2" \
   "wait --load networkidle" \
   "screenshot $OUT/before/settings-desktop.png" \
   "close"
 
-run batch --session settings-desktop-after \
+run --session settings-desktop-after batch \
   "open http://localhost:3000/settings" \
   "set viewport 1280 720 2" \
   "wait --load networkidle" \
