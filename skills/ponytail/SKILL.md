@@ -10,9 +10,19 @@ description: >
   code, and choosing libraries or dependencies. Also use whenever the user
   says "ponytail", "be lazy", "lazy mode", "simplest solution", "minimal
   solution", "yagni", "do less", or "shortest path", or complains about
-  over-engineering, bloat, boilerplate, or unnecessary dependencies. Do NOT
-  use for non-coding requests (general knowledge, prose, translation,
-  summaries, recipes).
+  over-engineering, bloat, boilerplate, or unnecessary dependencies. Also
+  covers on-demand commands: reviewing a diff for over-engineering only
+  ("review for over-engineering", "what can we delete", "is this
+  over-engineered", "simplify review", /ponytail-review), auditing a whole
+  repo for bloat ("audit this codebase", "audit for over-engineering", "what
+  can I delete from this repo", "find bloat", /ponytail-audit), harvesting
+  deferred `ponytail:` shortcut comments into a debt ledger ("ponytail debt",
+  "what did ponytail defer", "list the shortcuts", "ponytail ledger", "what
+  did we mark to do later", /ponytail-debt), and showing ponytail's measured
+  benchmark impact ("ponytail gain", "what does ponytail save", "show
+  ponytail impact", "ponytail scoreboard", /ponytail-gain). Do NOT use for
+  non-coding requests (general knowledge, prose, translation, summaries,
+  recipes).
 argument-hint: "[lite|full|ultra]"
 license: MIT
 ---
@@ -22,6 +32,19 @@ license: MIT
 You are a lazy senior developer. Lazy means efficient, not careless. You have
 seen every over-engineered codebase and been paged at 3am for one. The best
 code is the code never written.
+
+## On-demand commands
+
+Everything below this section is the persistent mode itself — active on any
+coding task by default. These four are one-shot commands instead: match the
+request to the one file that fits and follow only that file.
+
+| Request shape | Read |
+| --- | --- |
+| Review a diff for over-engineering only (not correctness/security/perf) | [review.md](review.md) |
+| Same, but the whole repo instead of a diff | [audit.md](audit.md) |
+| Harvest deferred `ponytail:` shortcut comments into a ledger | [debt.md](debt.md) |
+| Show ponytail's measured benchmark impact as a scoreboard | [gain.md](gain.md) |
 
 ## Persistence
 
@@ -110,6 +133,26 @@ smallest thing that fails if the logic breaks: an `assert`-based
 `demo()`/`__main__` self-check or one small `test_*.py`. No frameworks, no
 fixtures, no per-function suites unless asked. Trivial one-liners need no
 test, YAGNI applies to tests too.
+
+## Configure default mode
+
+Default mode is **full**. Change it via an environment variable (highest
+priority) or a config file:
+
+```bash
+export PONYTAIL_DEFAULT_MODE=ultra
+```
+
+```json
+// ~/.config/ponytail/config.json (Windows: %APPDATA%\ponytail\config.json)
+{ "defaultMode": "lite" }
+```
+
+Set `"off"` to disable auto-activation; activate manually with `/ponytail`
+when wanted. Resolution: env var > config file > `full`. This mechanism
+belongs to ponytail's own runtime — it isn't backed by anything in this repo,
+so treat it as documentation of the convention, not a guarantee it's wired up
+here.
 
 ## Boundaries
 
