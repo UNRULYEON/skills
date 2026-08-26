@@ -1,11 +1,13 @@
 ---
-name: transitions-dev
-description: Production-ready CSS transitions for web apps. Use when implementing notification badges, dropdowns, modals, panel reveals, page transitions, card resizes, number pop-ins, text swaps, icon swaps, success checks, avatar group hovers, error state shakes, search/input clear, skeleton loaders, shimmer text, sliding tabs, tooltips, staggered text reveals, card hover tilt, plus-to-menu morph, or accordions. Triggers on "add a transition", "animate the dropdown", "make the modal open smoothly", "swap icon", "page slide", "stagger animation", "open / close transition", "make it animate", "fade between", "success animation", "form error", "shake on invalid", "hover lift", "avatar stack hover", "clear the search", "skeleton loader", "loading shimmer", "shimmer text", "sliding tabs", "segmented control", "tooltip", "reveal text", "tilt card", "3D hover tilt", "cursor glare", "plus to menu", "FAB morph", "accordion", "collapsible", "expand / collapse", "disclosure". Also "motion tokens", "scan for ad-hoc transitions", "replace hardcoded durations with motion tokens", "tokenize my animations", and the commands transitions reveal, transitions review, transitions apply, transitions refine.
+name: transitions
+description: Production-ready CSS transitions for web apps, plus tuning for motion that already exists. Use when implementing notification badges, dropdowns, modals, panel reveals, page transitions, card resizes, number pop-ins, text swaps, icon swaps, success checks, avatar group hovers, error state shakes, search/input clear, skeleton loaders, shimmer text, sliding tabs, tooltips, staggered text reveals, card hover tilt, plus-to-menu morph, or accordions. Triggers on "add a transition", "animate the dropdown", "make the modal open smoothly", "swap icon", "page slide", "stagger animation", "open / close transition", "make it animate", "fade between", "success animation", "form error", "shake on invalid", "hover lift", "avatar stack hover", "clear the search", "skeleton loader", "loading shimmer", "shimmer text", "sliding tabs", "segmented control", "tooltip", "reveal text", "tilt card", "3D hover tilt", "cursor glare", "plus to menu", "FAB morph", "accordion", "collapsible", "expand / collapse", "disclosure". Also covers polishing motion that already animates: "polish my transitions", "refine the motion", "tune the timing / easing", "make the animation feel better / less janky", "tighten the durations", "fix the stagger", "align to the motion tokens", "audit the motion", "review my animations", "scan for ad-hoc transitions", "tokenize my animations", "timing feels off", "too slow / too fast", "open close timing", "hover in out". Also the commands transitions reveal, transitions review, transitions apply, transitions polish.
 ---
 
-# Transitions.dev
+# Transitions
 
-Twenty-one portable CSS transitions, each namespaced under `t-*` selectors with semantic CSS custom properties. Drop-in: paste the snippet, wire the documented HTML hooks, done. No framework dependencies, no demo-specific markup, and every snippet ships a `prefers-reduced-motion` guard.
+Twenty-seven portable CSS transitions, each namespaced under `t-*` selectors with semantic CSS custom properties. Drop-in: paste the snippet, wire the documented HTML hooks, done. No framework dependencies, no demo-specific markup, and every snippet ships a `prefers-reduced-motion` guard.
+
+The same skill also tunes motion that already exists in a project — hardcoded durations, easings, distances, scales, and blurs — against a shared five-dimension token scale, so ad-hoc animations read as one consistent system. See `transitions polish` below.
 
 ## Quick reference
 
@@ -71,15 +73,19 @@ If two transitions could fit, prefer the lower-overhead one (card resize over pa
 
 The skill exposes four namespaced verbs the agent should recognise in addition to direct transition requests. Every command starts with `transitions` so the invocation never collides with verbs from other skills installed in the same project.
 
+- `transitions reveal` and `transitions review` both work with **whole transitions** — listing the catalog and finding where a new one fits.
+- `transitions apply` **installs** a whole transition.
+- `transitions polish` never installs a new recipe — it only **tunes values that already animate** against the token scale. If a scan under `transitions polish` finds a spot that would be better served by a whole transition, say so and point at `transitions apply` instead of tuning it in place.
+
 ### transitions reveal — list every transition
 
 **Trigger phrases:** `transitions reveal`, "reveal the transitions", "list all transitions", "what transitions are in this skill", "show the transitions catalog".
 
-**Behaviour:** print the twenty-one transitions as a numbered plain-text list — name, one-line summary, and the matching reference filename. Reuse the rows in `## Quick reference` above; do not invent new copy. No project access.
+**Behaviour:** print the twenty-seven transitions as a numbered plain-text list — name, one-line summary, and the matching reference filename. Reuse the rows in `## Quick reference` above; do not invent new copy. No project access.
 
 ### transitions review — audit the project for fit
 
-**Trigger phrases:** `transitions review`, "review my project", "audit my animations", "where would transitions.dev help", "find places to use this skill".
+**Trigger phrases:** `transitions review`, "review my project", "where would transitions help", "find places to use this skill".
 
 **Behaviour:**
 
@@ -88,11 +94,11 @@ The skill exposes four namespaced verbs the agent should recognise in addition t
 3. Output a numbered list grouped by file:
    - `path/to/Component.tsx:L42` — looks like a dropdown opening, suggest **menu-dropdown** (`05-menu-dropdown.md`).
    - Skip ad-hoc transitions that already use a `t-*` class.
-4. Do not edit anything. End with: "Run `transitions apply` on any line to install the suggested transition."
+4. Do not edit anything. End with: "Run `transitions apply` on any line to install the suggested transition, or `transitions polish` if the motion is already close and just needs tuning."
 
 ### transitions apply — install the best-fit transition
 
-**Trigger phrases:** `transitions apply`, "apply a transition here", "add the right transition", "install transitions-dev here", "fix the animation on this element".
+**Trigger phrases:** `transitions apply`, "apply a transition here", "add the right transition", "install transitions here", "fix the animation on this element".
 
 **Behaviour:**
 
@@ -102,23 +108,35 @@ The skill exposes four namespaced verbs the agent should recognise in addition t
 4. On confirmation, follow the existing five-step procedure in `## Output format` verbatim (root block, snippet, hooks, reduced-motion guard, JS orchestration if needed).
 5. If the agent can't pick a single transition with confidence, fall back to `transitions reveal` and ask the user to choose.
 
-### transitions refine — replace ad-hoc motion with the motion tokens
+### transitions polish — tune existing motion against the token scale
 
-**Trigger phrases:** `transitions refine`, "refine my transitions", "scan for ad-hoc transitions", "replace hardcoded durations with motion tokens", "tokenize my animations", "tune the durations / easing", "audit my custom keyframes", "make the timing consistent", "align to the motion tokens".
+**Trigger phrases:** `transitions polish`, "polish my transitions", "refine my transitions", "refine the motion", "tune the timing / easing", "make the animation feel better / less janky", "tighten the durations", "fix the stagger", "align to the motion tokens", "audit the motion", "review my animations", "scan for ad-hoc transitions", "replace hardcoded durations with motion tokens", "tokenize my animations", "audit my custom keyframes", "make the timing consistent", "timing feels off", "too slow / too fast", "open close timing", "hover in out".
 
 **Behaviour:**
 
-1. **Scan the whole project** (not just dedicated stylesheets — also inline `style=` / CSS-in-JS, styled-components, `<style>` blocks, Tailwind arbitrary values like `duration-[300ms]`) for ad-hoc motion: `transition` / `animation` shorthands and longhands, custom `@keyframes` blocks, hardcoded durations (`…ms` / `…s`), easing (`cubic-bezier(...)` or keywords), translate distances (`px`), `scale(...)`, and `blur(...)`.
-2. For each value, infer **what the motion does** (modal close, dropdown open, tooltip, badge appear, text reveal, page slide, shake, …) from the surrounding selectors / component plus the `## Decision rules`. For a `@keyframes` block, read the `animation` that drives it and judge the keyframes' own duration/easing.
-3. **The key decision point is usage, not the raw number.** Look the inferred usage up in `## Motion tokens` and suggest the token whose documented usage matches — only when the usages line up. A 300ms modal close maps to `--duration-quick` because both are "modal close", even though the numbers differ. If a value's usage matches **no** token's usage, list it as `no matching token usage` and leave it untouched — never force a swap just because a number is close.
-4. Output a numbered list grouped by file, showing only values that should change, each as `path/to/Component.css:L42` — `modal close: 300ms → var(--duration-quick) (150ms)`, `ease → var(--ease-smooth-out)`. For keyframe-driven motion, suggest the token for the driving `animation`'s duration/easing.
-5. Do not edit anything. End with: "Confirm any line to apply the change, or run `transitions apply` to install a full transition instead."
+1. **Scan the whole project** (not just dedicated stylesheets — also inline `style=` / CSS-in-JS, styled-components, `<style>` blocks, Tailwind arbitrary values like `duration-[300ms]`) for ad-hoc motion: `transition` / `animation` shorthands and longhands, custom `@keyframes` blocks, hardcoded durations (`…ms` / `…s`), easing (`cubic-bezier(...)` or keywords), translate distances (`px`), `scale(...)`, and `blur(...)`. For a `@keyframes` block, read the `animation` that drives it and judge the keyframes' own duration/easing.
+2. For each value, infer **what the motion does** (modal close, dropdown open, tooltip, badge appear, text reveal, page slide, shake, hover lift, …) from the surrounding selectors / component plus the `## Decision rules`. Look the inferred usage up in `## Motion tokens` and suggest the token whose documented usage matches — see `## Core doctrine` below. If a value's usage matches **no** token's usage, list it as `no matching token usage` and leave it untouched — never force a swap just because a number is close.
+3. Apply the `## Polish rules` — open/close asymmetry, hover in/out, stagger totals, and delays — not just whether a single value is on-grid.
+4. Output a numbered list grouped by file, showing only values that should change:
+   - `path/to/Component.css:L42` — `modal close: 300ms → var(--duration-quick) (150ms)` — close should be quicker than the 250ms open.
+   - `path/to/List.css:L20` — `stagger: 120ms → var(--duration-stagger) (40ms)` — 8 items × 120ms = 960ms total, last item feels late.
+5. **Do not edit anything yet.** End with: "Confirm any line to apply, or say 'apply all' to update them together."
+6. On confirmation, apply the token changes to the source:
+   - Replace hardcoded durations/easings/distances/scales/blur with `var(--…)` references where the project's `_root.css` is already imported; otherwise write the token's literal value and note that importing `_root.css` would let future tweaks happen in one place.
+   - Keep the file's existing unit/format (`0.25s` vs `250ms`) unless switching to `var(--…)`.
+   - Touch only the motion values being polished — no reformatting, no unrelated edits.
+   - Handle plain CSS, CSS Modules, styled-components/emotion, Tailwind utilities/config, inline `style` objects, and Motion/Framer variants.
+   - If `_root.css` is not yet in the project, offer to install it (once) before or alongside the polish pass.
+
+## Core doctrine: match on usage, never on the nearest number
+
+A value is not "wrong" because it is off by 20ms. It is wrong when it does not fit **what the motion does**. Always infer the usage first — modal close, dropdown open, tooltip, badge appear, page slide, text reveal, shake — then pick the token whose documented usage matches. A `300ms` modal close maps to `--duration-quick` (150ms) because both are "modal close", even though the numbers differ. If a value's usage matches **no** token usage, leave it untouched. Never force a swap just because a number is close.
 
 ## Motion tokens
 
-The shared motion scale behind the twenty-one transitions — the same tokens the [transitions.dev](https://transitions.dev) Motion tokens tab exposes. They ship at the top of [`_root.css`](./_root.css), so once it's imported you can reference any of them as `var(--…)` (e.g. `transition: transform var(--duration-fast) var(--ease-smooth-out)`).
+The shared motion scale behind the twenty-seven transitions — the same tokens the [transitions.dev](https://transitions.dev) Motion tokens tab exposes. They ship at the top of [`_root.css`](./_root.css), so once it's imported you can reference any of them as `var(--…)` (e.g. `transition: transform var(--duration-fast) var(--ease-smooth-out)`).
 
-`transitions refine` maps each existing value to a usage below, then suggests the token to reference. Match on **usage**, not on the raw number — a 300ms modal close still maps to `--duration-quick` (150ms).
+`transitions polish` maps each existing value to a usage below, then suggests the token to reference. Match on **usage**, not on the raw number — a 300ms modal close still maps to `--duration-quick` (150ms).
 
 **Durations**
 
@@ -143,6 +161,8 @@ The shared motion scale behind the twenty-one transitions — the same tokens th
 | `--ease-bounce` | `cubic-bezier(0.34, 1.36, 0.64, 1)` | badge pop open |
 | `--ease-bounce-strong` | `cubic-bezier(0.34, 3.85, 0.64, 1)` | bouncy hover-out (avatar return) |
 
+`--ease-smooth-out` is the default. Nudge generic `ease`, `ease-in`, or any hand-rolled `cubic-bezier(...)` / `linear(...)` toward it **only** for surface motion (open/close, slide, resize, position). Leave the other five token easings alone — they are already on-grid and each carries its own intent.
+
 **Distances**
 
 | Token | Value | Usage |
@@ -153,6 +173,8 @@ The shared motion scale behind the twenty-one transitions — the same tokens th
 | `--distance-medium` | `12px` | text reveal |
 | `--distance-large` | `30px` | check badge appear |
 
+Travel distance scales *down* with frequency and *up* with ceremony: an in-place text swap barely moves (`4px`), a page slide travels a readable `8px`, a one-off celebratory badge can sweep `30px`. If a translate distance is larger than `~40px` for anything but a full panel/drawer, it usually reads as sluggish — pull it toward `--distance-base`.
+
 **Scales**
 
 | Token | Value | Usage |
@@ -162,6 +184,8 @@ The shared motion scale behind the twenty-one transitions — the same tokens th
 | `--scale-small` | `0.98` | tooltip open |
 | `--scale-tiny` | `0.99` | dropdown close |
 
+The captured value is the non-resting "pre" scale the surface animates *from*; it always settles to `1`. Bigger surfaces start from further away (`0.96` modal), small hints barely scale (`0.98`–`0.99`). A pre-scale below `~0.9` reads as a "zoom" and rarely fits UI chrome — snap it to the usage token.
+
 **Blur**
 
 | Token | Value | Usage |
@@ -170,9 +194,34 @@ The shared motion scale behind the twenty-one transitions — the same tokens th
 | `--blur-medium` | `3px` | page slide, text reveal |
 | `--blur-large` | `8px` | success check open |
 
+Blur is the non-resting "pre" blur, settling to `0`. Use it to soften a swap or slide, never on a plain fade or a color/theme change. Blur can be **absent** as well as off-token: when the usage clearly calls for one (a page slide with no blur lane) suggest adding `--blur-medium`.
+
+## Polish rules — when a value is right
+
+### Open/close asymmetry
+
+Opening is an invitation; closing should get out of the way. Closes are faster and quieter than opens.
+
+- **Duration:** dropdown/modal **open 250ms → close 150ms** (`--duration-fast` → `--duration-quick`); panel **open 400ms → close 350ms** (`--duration-slow` → `--duration-medium`); toast **close 350ms** (`--duration-medium`).
+- **Symmetric exceptions — same duration + easing both ways, do NOT split:** page side-by-side (250ms), tabs sliding (250ms), accordion (250ms), icon swap (250ms), text swap (150ms). These read as a single reversible motion, not an open/close pair.
+- **Distance & blur:** the enter phase carries the distance and blur; the exit can drop or shrink them so a close doesn't fling content across the screen.
+- **Easing:** most opens and closes share `--ease-smooth-out`. Overshoot curves belong to *entrances only* (badge pop, number pop-in) — never bounce a close.
+
+### Hover in vs hover out
+
+- **In:** quick and direct — a short `--duration-fast`-or-less lift with `--ease-smooth-out`.
+- **Out:** softer and springier — the return can take longer and use `--ease-bounce-strong` (avatar return, `cubic-bezier(0.34, 3.85, 0.64, 1)`) so the row settles instead of snapping. This is the one place the *out* is more elaborate than the *in*.
+
+### Stagger and delay
+
+- **Stagger offset:** `--duration-stagger` (40ms) per item; step up to `--duration-micro` (80ms) for a few large items. Keep the **total** stagger (offset × item count) under ~300ms so the last item doesn't feel late — for long lists, cap the number of staggered items or shrink the offset.
+- **Intent delay:** a tooltip waits `--duration-micro` (80ms) before appearing so a passing cursor doesn't trigger it; the success-check path draw uses the same 80ms beat. A delay is right when you want to *filter accidental triggers* or *sequence* two things — not to pad a slow animation.
+- **Delay vs duration:** if motion feels late, prefer trimming the **duration** over adding delay. Reserve delay for stagger, intent gating, and deliberate sequencing.
+- **Never delay a close** or a hover-out — dismissal must feel instant.
+
 ## Universal install
 
-Copy [`_root.css`](./_root.css) into your project **once** and import it (or paste its `:root` block into your global stylesheet). It leads with the shared **motion-token scale** (`--duration-*`, `--ease-*`, `--distance-*`, `--scale-*`, `--blur-*` — see `## Motion tokens`), followed by the semantic tunable variables for **all twenty-one** transitions. Every snippet reads from these names — `--resize-*`, `--badge-*`, `--dropdown-*`, `--clear-*`, `--shimmer-*`, `--tabs-*`, `--tt-*`, `--stagger-*`, `--tilt-*`, `--morph-*`, `--acc-*`, and the rest.
+Copy [`_root.css`](./_root.css) into your project **once** and import it (or paste its `:root` block into your global stylesheet). It leads with the shared **motion-token scale** (`--duration-*`, `--ease-*`, `--distance-*`, `--scale-*`, `--blur-*` — see `## Motion tokens`), followed by the semantic tunable variables for **all twenty-seven** transitions. Every snippet reads from these names — `--resize-*`, `--badge-*`, `--dropdown-*`, `--clear-*`, `--shimmer-*`, `--tabs-*`, `--tt-*`, `--stagger-*`, `--tilt-*`, `--morph-*`, `--acc-*`, and the rest.
 
 Each reference file also restates just the variables that snippet needs, so you can install a single transition without pulling the whole block. Don't duplicate the block — if `_root.css` is already imported, skip re-pasting any per-snippet `:root`.
 
@@ -205,6 +254,10 @@ Keep the diff small: only edit the files needed to introduce the transition. Don
 - **Padding on the accordion grid track** — put padding on `.t-acc-panel-inner`, never on `.t-acc-panel`; padding on the `0fr` track leaves a residual height strip so the panel never fully closes.
 - **Morphing the accordion chevron's `d` path** — CSS `d:` path interpolation is Chromium-only, so it never animates on mobile Safari / Firefox. Flip the chevron vertically (`transform: scaleY(-1)`) instead — it passes through a flat line at the midpoint just like the path morph and works everywhere. Keep the path symmetric about its viewBox centre and add `vector-effect: non-scaling-stroke` so the stroke stays constant through the flip. This is what the snippet ships.
 
+## Relationship to the Refine panel
+
+The transitions.dev **Refine panel**'s **Small refinement** tab automatically inlines the compact rules in [`_refine-rules.md`](./_refine-rules.md) into its agent prompt, so per-click suggestions honor the `## Polish rules` above with zero extra file reads. `transitions polish` mirrors that audit at project scale and writes the accepted tweaks to source.
+
 ## Reference files
 
 - [01-card-resize.md](./01-card-resize.md) — Card resize
@@ -234,4 +287,9 @@ Keep the diff small: only edit the files needed to introduce the transition. Don
 - [25-checkbox-check.md](./25-checkbox-check.md) — Checkbox check
 - [26-spinning-counter.md](./26-spinning-counter.md) — Spinning counter
 - [27-toggle.md](./27-toggle.md) — Toggle
+- [_refine-rules.md](./_refine-rules.md) — compact polish rules consumed by the transitions.dev Refine panel
 - [_root.css](./_root.css) — the universal install block on its own, ready to import directly.
+
+## Future expansion
+
+Natural next additions: performance hygiene (`transition: all`, animating `width`/`top`/`box-shadow` instead of `transform`/`opacity`, `will-change` misuse), missing `prefers-reduced-motion` detection, a cross-project consistency audit (same-purpose transitions using different values), Tailwind/Framer token adapters, and a "motion polish score" report.

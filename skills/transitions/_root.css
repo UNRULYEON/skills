@@ -1,10 +1,10 @@
-/* transitions-dev — copy this :root block into your project once.
+/* transitions — copy this :root block into your project once.
    Every transition snippet reads from these semantic names. */
 :root {
   /* ── Motion tokens — shared scale ──────────────────────────────
      Reference these with var(--…) anywhere in your project. The
      transitions below ship literal values so each snippet works on
-     its own; `transitions refine` maps hardcoded values back to
+     its own; `transitions polish` maps hardcoded values back to
      these tokens. */
   /* Durations */
   --duration-stagger: 40ms;  /* per-item stagger offset */
