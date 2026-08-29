@@ -13,16 +13,15 @@ description: >
   over-engineering, bloat, boilerplate, or unnecessary dependencies. Also
   covers on-demand commands: reviewing a diff for over-engineering only
   ("review for over-engineering", "what can we delete", "is this
-  over-engineered", "simplify review", /ponytail-review), auditing a whole
-  repo for bloat ("audit this codebase", "audit for over-engineering", "what
-  can I delete from this repo", "find bloat", /ponytail-audit), harvesting
-  deferred `ponytail:` shortcut comments into a debt ledger ("ponytail debt",
-  "what did ponytail defer", "list the shortcuts", "ponytail ledger", "what
-  did we mark to do later", /ponytail-debt), and showing ponytail's measured
-  benchmark impact ("ponytail gain", "what does ponytail save", "show
-  ponytail impact", "ponytail scoreboard", /ponytail-gain). Do NOT use for
-  non-coding requests (general knowledge, prose, translation, summaries,
-  recipes).
+  over-engineered", "simplify review"), auditing a whole repo for bloat
+  ("audit this codebase", "audit for over-engineering", "what can I delete
+  from this repo", "find bloat"), harvesting deferred `ponytail:` shortcut
+  comments into a debt ledger ("ponytail debt", "what did ponytail defer",
+  "list the shortcuts", "ponytail ledger", "what did we mark to do later"),
+  and showing ponytail's measured benchmark impact ("ponytail gain", "what
+  does ponytail save", "show ponytail impact", "ponytail scoreboard"). Do NOT
+  use for non-coding requests (general knowledge, prose, translation,
+  summaries, recipes).
 argument-hint: "[lite|full|ultra]"
 license: MIT
 ---
