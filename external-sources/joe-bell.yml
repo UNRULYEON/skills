@@ -1,0 +1,13 @@
+# Registry of external skills vendored via this provider.
+# Do not edit vendored skill directories directly — edit this file and
+# re-run: bun scripts/external-skills.ts sync <local_name> --write
+
+provider: joe-bell
+skills:
+  - local_name: apple-web-app
+    upstream_repo: joe-bell/skills
+    upstream_path: skills/apple-web-app
+    pinned_ref: 3c875dd53150e763d82da3516a8a0dde21adc8c7
+    update_policy: latest
+    status: active
+    owner: amar
