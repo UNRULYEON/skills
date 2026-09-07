@@ -3,7 +3,7 @@ provider: bholmesdev
 local_name: simplify
 upstream_repo: bholmesdev/skills
 upstream_path: skills/simplify
-pinned_ref: dbf06a0588c1c5fd06dab4e5f24e909285443131
+pinned_ref: 44da67bd1896cdafced6f60573b62ae71d18ef2a
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync simplify --write`.
 
 - Source repo: [bholmesdev/skills](https://github.com/bholmesdev/skills)
 - Source path: `skills/simplify`
-- Pinned commit: [`dbf06a0588c1c5fd06dab4e5f24e909285443131`](https://github.com/bholmesdev/skills/commit/dbf06a0588c1c5fd06dab4e5f24e909285443131)
+- Pinned commit: [`44da67bd1896cdafced6f60573b62ae71d18ef2a`](https://github.com/bholmesdev/skills/commit/44da67bd1896cdafced6f60573b62ae71d18ef2a)
 - Update policy: latest

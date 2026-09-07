@@ -7,7 +7,7 @@ skills:
   - local_name: apple-web-app
     upstream_repo: joe-bell/skills
     upstream_path: skills/apple-web-app
-    pinned_ref: 3c875dd53150e763d82da3516a8a0dde21adc8c7
+    pinned_ref: 14076bfe7c7c0c6260980f581e2657b4ec9c6e44
     update_policy: latest
     status: active
     owner: amar

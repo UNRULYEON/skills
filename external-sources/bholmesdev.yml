@@ -7,14 +7,14 @@ skills:
   - local_name: simplify
     upstream_repo: bholmesdev/skills
     upstream_path: skills/simplify
-    pinned_ref: dbf06a0588c1c5fd06dab4e5f24e909285443131
+    pinned_ref: 44da67bd1896cdafced6f60573b62ae71d18ef2a
     update_policy: latest
     status: active
     owner: amar
   - local_name: review-pr
     upstream_repo: bholmesdev/hubble.md
     upstream_path: .agents/skills/review-pr
-    pinned_ref: 320b736b76a136ec2a17692ea63311b070298269
+    pinned_ref: 91b7ddb3cdfc5f5688ad534ea68c9bc232b737c8
     update_policy: latest
     status: active
     owner: amar

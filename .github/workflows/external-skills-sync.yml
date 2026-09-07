@@ -27,9 +27,17 @@ jobs:
 
       - name: Compute a run-unique PR body path
         id: pr-body
-        run: echo "path=${RUNNER_TEMP}/external-skills-pr-body-${{ github.run_id }}.md" >> "$GITHUB_OUTPUT"
+        run: |
+          path="${RUNNER_TEMP}/external-skills-pr-body-${{ github.run_id }}.md"
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "No upstream updates found — all pins are up to date." > "$path"
 
+      # continue-on-error: a renamed/removed upstream path must not abort the
+      # job before other skills are vendored and the PR is opened. bump-pins
+      # skips those entries (exit 1) and still writes pins for the rest.
       - name: Check for upstream updates and bump pins
+        id: bump
+        continue-on-error: true
         run: bun scripts/external-skills.ts bump-pins --write --summary "${{ steps.pr-body.outputs.path }}"
 
       - name: Re-vendor skills at their (possibly bumped) pins
@@ -46,3 +54,9 @@ jobs:
           body-path: ${{ steps.pr-body.outputs.path }}
           branch: chore/external-skills-sync
           delete-branch: true
+
+      - name: Fail if some pins could not be bumped
+        if: steps.bump.outcome == 'failure'
+        run: |
+          echo "::error::Some upstream skill paths were missing, so those pins were not bumped. Other skills were still synced."
+          exit 1
