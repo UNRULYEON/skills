@@ -204,16 +204,46 @@ interface PinUpdate {
   to: string;
 }
 
-function buildBumpPinsSummary(updates: PinUpdate[], write: boolean): string {
-  if (updates.length === 0) return "No upstream updates found — all pins are up to date.\n";
+interface PinFailure {
+  local_name: string;
+  upstream_repo: string;
+  upstream_path: string;
+  at: string;
+}
 
-  const verb = write ? "Bumped" : "Available";
-  const lines = updates.map(
-    (u) =>
-      `- **${u.local_name}** (${u.upstream_repo}): \`${short(u.from)}\` → \`${short(u.to)}\`\n  https://github.com/${u.upstream_repo}/compare/${u.from}...${u.to}`,
-  );
+function buildBumpPinsSummary(
+  updates: PinUpdate[],
+  write: boolean,
+  failures: PinFailure[] = [],
+): string {
+  const parts: string[] = [];
 
-  return `${verb} ${updates.length} pin${updates.length === 1 ? "" : "s"}:\n\n${lines.join("\n")}\n`;
+  if (updates.length === 0 && failures.length === 0) {
+    return "No upstream updates found — all pins are up to date.\n";
+  }
+
+  if (updates.length > 0) {
+    const verb = write ? "Bumped" : "Available";
+    const lines = updates.map(
+      (u) =>
+        `- **${u.local_name}** (${u.upstream_repo}): \`${short(u.from)}\` → \`${short(u.to)}\`\n  https://github.com/${u.upstream_repo}/compare/${u.from}...${u.to}`,
+    );
+    parts.push(
+      `${verb} ${updates.length} pin${updates.length === 1 ? "" : "s"}:\n\n${lines.join("\n")}`,
+    );
+  }
+
+  if (failures.length > 0) {
+    const lines = failures.map(
+      (f) =>
+        `- **${f.local_name}** (${f.upstream_repo}): \`${f.upstream_path}\` missing at \`${short(f.at)}\``,
+    );
+    parts.push(
+      `${failures.length} pin${failures.length === 1 ? "" : "s"} not bumped (upstream path missing):\n\n${lines.join("\n")}`,
+    );
+  }
+
+  return `${parts.join("\n\n")}\n`;
 }
 
 async function bumpPins(
@@ -235,59 +265,68 @@ async function bumpPins(
   );
 
   const updates: PinUpdate[] = [];
-  for (const entry of candidates) {
-    const spinner = ora({ text: entry.local_name, color: "cyan" }).start();
+  const failures: PinFailure[] = [];
+  try {
+    for (const entry of candidates) {
+      const spinner = ora({ text: entry.local_name, color: "cyan" }).start();
 
-    const defaultBranch = (
-      await $`gh api repos/${entry.upstream_repo} -q .default_branch`.text()
-    ).trim();
-    const latestSha = (
-      await $`gh api repos/${entry.upstream_repo}/commits/${defaultBranch} -q .sha`.text()
-    ).trim();
+      const defaultBranch = (
+        await $`gh api repos/${entry.upstream_repo} -q .default_branch`.text()
+      ).trim();
+      const latestSha = (
+        await $`gh api repos/${entry.upstream_repo}/commits/${defaultBranch} -q .sha`.text()
+      ).trim();
 
-    if (!(await pathExistsUpstream(entry.upstream_repo, entry.upstream_path, latestSha))) {
-      spinner.fail(
-        `${pc.bold(entry.local_name)} ${pc.red(`path missing at ${short(latestSha)}: ${entry.upstream_path}`)}`,
+      if (!(await pathExistsUpstream(entry.upstream_repo, entry.upstream_path, latestSha))) {
+        spinner.fail(
+          `${pc.bold(entry.local_name)} ${pc.red(`path missing at ${short(latestSha)}: ${entry.upstream_path}`)}`,
+        );
+        failures.push({
+          local_name: entry.local_name,
+          upstream_repo: entry.upstream_repo,
+          upstream_path: entry.upstream_path,
+          at: latestSha,
+        });
+        process.exitCode = 1;
+        continue;
+      }
+
+      if (latestSha === entry.pinned_ref) {
+        spinner.succeed(
+          `${pc.bold(entry.local_name)} ${pc.dim(`up to date @ ${short(entry.pinned_ref)}`)}`,
+        );
+        continue;
+      }
+
+      updates.push({
+        local_name: entry.local_name,
+        upstream_repo: entry.upstream_repo,
+        from: entry.pinned_ref,
+        to: latestSha,
+      });
+      spinner.warn(
+        `${pc.bold(entry.local_name)} ${pc.dim(short(entry.pinned_ref))} ${arrow} ${pc.green(short(latestSha))}`,
       );
-      process.exitCode = 1;
-      continue;
-    }
 
-    if (latestSha === entry.pinned_ref) {
-      spinner.succeed(
-        `${pc.bold(entry.local_name)} ${pc.dim(`up to date @ ${short(entry.pinned_ref)}`)}`,
-      );
-      continue;
+      if (write) {
+        const path = join(EXTERNAL_SOURCES_DIR, `${entry.provider}.yml`);
+        const raw = await readFile(path, "utf-8");
+        const updated = raw.replace(
+          new RegExp(
+            `(local_name: ${entry.local_name}\\n(?:.*\\n)*?\\s*pinned_ref: )${entry.pinned_ref}`,
+          ),
+          `$1${latestSha}`,
+        );
+        await Bun.write(path, updated);
+        entry.pinned_ref = latestSha;
+      }
     }
-
-    updates.push({
-      local_name: entry.local_name,
-      upstream_repo: entry.upstream_repo,
-      from: entry.pinned_ref,
-      to: latestSha,
-    });
-    spinner.warn(
-      `${pc.bold(entry.local_name)} ${pc.dim(short(entry.pinned_ref))} ${arrow} ${pc.green(short(latestSha))}`,
-    );
-
-    if (write) {
-      const path = join(EXTERNAL_SOURCES_DIR, `${entry.provider}.yml`);
-      const raw = await readFile(path, "utf-8");
-      const updated = raw.replace(
-        new RegExp(
-          `(local_name: ${entry.local_name}\\n(?:.*\\n)*?\\s*pinned_ref: )${entry.pinned_ref}`,
-        ),
-        `$1${latestSha}`,
-      );
-      await Bun.write(path, updated);
-      entry.pinned_ref = latestSha;
-    }
+  } finally {
+    if (summaryPath) await Bun.write(summaryPath, buildBumpPinsSummary(updates, write, failures));
   }
 
-  if (summaryPath) await Bun.write(summaryPath, buildBumpPinsSummary(updates, write));
-
   if (updates.length === 0) {
-    if (process.exitCode === 1) {
+    if (failures.length > 0) {
       console.log(
         pc.red("\nSome upstream paths are missing. Pins were not bumped for those entries.\n"),
       );
@@ -296,6 +335,13 @@ async function bumpPins(
     }
   } else if (write) {
     console.log(pc.bold(`\n${updates.length} pin${updates.length === 1 ? "" : "s"} bumped.`));
+    if (failures.length > 0) {
+      console.log(
+        pc.red(
+          `${failures.length} pin${failures.length === 1 ? "" : "s"} skipped — upstream path missing.`,
+        ),
+      );
+    }
     console.log(pc.dim("Run `sync --all --write` to vendor the bumped pins.\n"));
   } else {
     console.log(
@@ -357,7 +403,9 @@ async function defaultBranch(repo: string): Promise<string> {
 }
 
 async function pathExistsUpstream(repo: string, path: string, ref: string): Promise<boolean> {
-  const result = await $`gh api repos/${repo}/contents/${path}?ref=${ref}`.quiet().nothrow();
+  // Pass the endpoint as a single interpolation so Bun's shell does not glob `?`.
+  const endpoint = `repos/${repo}/contents/${path}?ref=${ref}`;
+  const result = await $`gh api ${endpoint}`.quiet().nothrow();
   return result.exitCode === 0;
 }
 
