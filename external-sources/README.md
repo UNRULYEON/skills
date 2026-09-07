@@ -7,9 +7,9 @@ don't hand-edit `pinned_ref` fields, use the commands below instead.
 ```yaml
 provider: mattpocock
 skills:
-  - local_name: grilling # directory name under skills/
+  - local_name: writing-for-agents # directory name under skills/
     upstream_repo: mattpocock/skills # owner/repo
-    upstream_path: skills/productivity/grilling # path within that repo
+    upstream_path: skills/productivity/writing-for-agents # path within that repo
     pinned_ref: <commit sha> # exact commit the vendored copy is pinned to
     update_policy: latest # "latest" = eligible for bump-pins, "manual" = never auto-bumped
     status: active # "active" | "deprecated"

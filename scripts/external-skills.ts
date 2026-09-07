@@ -5,7 +5,7 @@
 // and docs/adding-an-external-skill.md for the step-by-step workflow.
 
 import { parse as parseYaml } from "yaml";
-import { readdir, mkdtemp, rm, cp, readFile } from "node:fs/promises";
+import { readdir, mkdtemp, rm, cp, readFile, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { $ } from "bun";
@@ -82,7 +82,16 @@ async function fetchUpstreamDir(
     throw new Error(`Failed to extract tarball for ${entry.upstream_repo}@${entry.pinned_ref}`);
   }
 
-  return join(workDir, extractedRootName, entry.upstream_path);
+  const sourcePath = join(workDir, extractedRootName, entry.upstream_path);
+  try {
+    await stat(sourcePath);
+  } catch {
+    throw new Error(
+      `Upstream path not found: ${entry.upstream_repo}/${entry.upstream_path} @ ${short(entry.pinned_ref)} (renamed or removed?)`,
+    );
+  }
+
+  return sourcePath;
 }
 
 /** Rewrites SKILL.md's `name:` frontmatter field to match the registry's local_name. */
@@ -236,6 +245,14 @@ async function bumpPins(
       await $`gh api repos/${entry.upstream_repo}/commits/${defaultBranch} -q .sha`.text()
     ).trim();
 
+    if (!(await pathExistsUpstream(entry.upstream_repo, entry.upstream_path, latestSha))) {
+      spinner.fail(
+        `${pc.bold(entry.local_name)} ${pc.red(`path missing at ${short(latestSha)}: ${entry.upstream_path}`)}`,
+      );
+      process.exitCode = 1;
+      continue;
+    }
+
     if (latestSha === entry.pinned_ref) {
       spinner.succeed(
         `${pc.bold(entry.local_name)} ${pc.dim(`up to date @ ${short(entry.pinned_ref)}`)}`,
@@ -270,7 +287,13 @@ async function bumpPins(
   if (summaryPath) await Bun.write(summaryPath, buildBumpPinsSummary(updates, write));
 
   if (updates.length === 0) {
-    console.log(pc.green("\nAll pins up to date.\n"));
+    if (process.exitCode === 1) {
+      console.log(
+        pc.red("\nSome upstream paths are missing. Pins were not bumped for those entries.\n"),
+      );
+    } else {
+      console.log(pc.green("\nAll pins up to date.\n"));
+    }
   } else if (write) {
     console.log(pc.bold(`\n${updates.length} pin${updates.length === 1 ? "" : "s"} bumped.`));
     console.log(pc.dim("Run `sync --all --write` to vendor the bumped pins.\n"));
@@ -399,7 +422,7 @@ async function addEntry(rawArgs: string[]): Promise<void> {
   if (!path) {
     if (!interactive) throw new Error("Missing <upstream_path>. See usage below.");
     const answer = await clack.text({
-      message: `Path within ${repo} (e.g. skills/productivity/grilling)`,
+      message: `Path within ${repo} (e.g. skills/productivity/writing-for-agents)`,
       validate: (v) => (v?.trim() ? undefined : "Required"),
     });
     if (clack.isCancel(answer)) throw new Error("Cancelled.");
