@@ -7,7 +7,7 @@ skills:
   - local_name: writing-for-agents
     upstream_repo: mattpocock/skills
     upstream_path: skills/productivity/writing-for-agents
-    pinned_ref: 3cca18b368ae95cdbdebbff572ccafa662551015
+    pinned_ref: 4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
     update_policy: latest
     status: active
     owner: amar

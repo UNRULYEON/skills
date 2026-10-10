@@ -25,11 +25,36 @@ Format: **Author — Title (date) — URL** — what this skill took from it.
   (both `_blank` and same-window) open the default browser while `window.open`
   stays in the app. Second run the same day: the title-bar snapshot reads
   `<body>` background, not manifest `background_color`; the Apps view and
-  Spotlight show the same flat icon as the Dock.
+  Spotlight show the same flat icon as the Dock. iOS Simulator on 2026-09-22,
+  iPhone 17 Pro on iOS 26.5 (23F77) and iPhone 18 Pro on iOS 27.0 (24A434),
+  Safari tab with `viewport-fit=cover`, identical on both:
+  `A: fixed inset-0 rgba(0,0,0,.2) dim → both bars dimmed; absolute → neither`;
+  `A: 90% wide → used; 80% → page background; 30% centred → page background; 30% off-centre → ignored`;
+  `A: 4px deep → ignored; 5px → page background; 6px → used; raised 1px → used; raised 4px → ignored`;
+  `A: opacity 0 → skipped; opacity .5 → full colour; theme-color → ignored; <body> green → bars green`;
+  `A: sticky header, then fixed dim → status bar keeps header colour; plus 24px fixed edge strip → dimmed`;
+  `A: native <dialog> alone → both bars dimmed; sticky header, then native <dialog> → status bar keeps header colour`;
+  `A: transparent full-width pointer-events:none bar over a pointer-events:none dim → page background`.
+  Device-verified on 2026-09-23 with an iPhone 17 Pro on iOS 27.0 (build not
+  recorded), Safari tab, `viewport-fit=cover`, matching the Simulator in every
+  case:
+  `A: fixed dim → both bars dimmed; absolute → neither`;
+  `A: 92% wide → used; 80% → page background; 6px deep → used; 4px → ignored`;
+  `A: dark pill at bottom centre over the dim → address bar page background`;
+  `A: sticky header, then fixed dim → status bar keeps header colour; native <dialog> alone → both bars dimmed (not tried over a sticky header)`;
+  `A: opacity .05 → skipped; opacity .15 → full colour; transparent full-width pointer-events:none bar over the dim → page background`.
+  Further runs on 2026-09-23 in the iOS 26.5 Simulator (23F77); those marked
+  (device) also on the same iPhone 17 Pro with iOS 27.0:
+  `A: no viewport-fit=cover, fixed dim → both bars dimmed (device)`;
+  `A: empty transparent full-screen pointer-events:auto layer over the dim → page background (device); with an empty ::before → both bars dimmed (device)`;
+  `A: same layer added after the dim → both bars stay dimmed; pointer-events:none layer over a pointer-events:auto dim → both bars dimmed`;
+  `A: text field focused in a dialog or bottom sheet near the keyboard → compact address bar floats above the keyboard and covers the footer (Simulator only)`.
 - **Joe Bell — a production Tailwind v4 app (2025, private)** — the Tailwind
   v4 reference's spellings come from the same production app.
 - **Tailwind CSS — v4 documentation (`@utility`, `@custom-variant`, `--value()`)** —
-  https://tailwindcss.com/docs — syntax for the Tailwind v4 reference.
+  https://tailwindcss.com/docs — syntax for the Tailwind v4 reference, and the
+  `content: ''` that the `before` and `after` variants add by default
+  (https://tailwindcss.com/docs/hover-focus-and-other-states).
 
 ## iOS PWA behaviour
 
@@ -98,6 +123,14 @@ documentation; thresholds are approximate.
   https://benfrain.com/ios26-safari-theme-color-tab-tinting-with-fixed-position-elements/
   — Safari 26 ignoring `theme-color`; edge-touching fixed/sticky element
   sampling; `opacity: 0` elements still being sampled (use `display: none`).
+- **WebKit — `LocalFrameView::fixedContainerEdges` (trunk d3afea7,
+  2026-09-22)** —
+  https://github.com/WebKit/WebKit/blob/d3afea7d89fd2b062ef39b644c3f026dc4904070/Source/WebCore/page/LocalFrameView.cpp
+  — the edge-sampling algorithm: one hit-test at the edge's centre 4px inside
+  it, fixed/sticky ancestors only, the 90% width ratio, the 10px border-box
+  rule and 2px sample strip, blending below 0.75 alpha, dimming-layer and
+  `::backdrop` handling, the existing-colour preference and the
+  `pointer-events` retry.
 - **Jahir Fiquitiva — "Safari toolbar" (2026-03-02)** —
   https://jahir.dev/blog/safari-toolbar — sampling thresholds (width ≥ ~80%,
   height ≥ ~3px, within ~4px of the top / ~3px of the bottom) and the
@@ -106,8 +139,9 @@ documentation; thresholds are approximate.
   https://nasedk.in/blog/ios26-safari-toolbar-colors/ — corroboration of the
   fallback chain.
 - **Pavel Larionov — "Safari 26, Liquid Glass and the web" (2026-05-13)** —
-  https://1ar.io/updates/safari-26-liquid-glass-web/ — the
-  `viewport-fit=cover` requirement for the bottom tint.
+  https://1ar.io/updates/safari-26-liquid-glass-web/ — reported that the
+  bottom tint needs `viewport-fit=cover`; not reproduced in the iOS 26.5
+  Simulator or on an iPhone 17 Pro with iOS 27.0 (Joe Bell, 2026-09-23).
 - **thatdevpro — "HTML meta theme-color"** —
   https://www.thatdevpro.com/reference/html-meta-theme-color/ — current status
   of the meta tag across browsers.
@@ -286,3 +320,34 @@ persist the dismissal"; and the manifest field checklist.
   cannot establish that safe-area layout has settled. Removed the polling
   example rather than promoting it as a readiness API. The older production
   observation is retained above; no new OS build was tested.
+
+## Startup appearance review (2026-09-15)
+
+- **Stephen — WebKit bug 259328 (2023-07-18)** —
+  https://bugs.webkit.org/show_bug.cgi?id=259328 — reports startup images
+  retaining the installation's appearance after system light/dark changes in
+  both directions. Read as NEW on 2026-09-15. The report fields say Safari 17
+  and iOS 16; they are not a tested support matrix. Used to replace the
+  unconditional claim of selection at every launch.
+- **CSSWG — "[mediaqueries] Effect of `<meta name=color-scheme>` on the
+  `(prefers-color-scheme)` MQ" (opened 2024-04-25)** —
+  https://github.com/w3c/csswg-drafts/issues/10249 — resolved to close with no
+  change on 2026-01-21; closed as retracted on 2026-06-12. Page color-scheme
+  is not an established startup-selection override.
+- **web.dev — "Enhancements" (updated 2024-09-20)** —
+  https://web.dev/learn/pwa/enhancements — exact launch-window image sizing,
+  media-specific variants and a white launch screen when no startup image
+  covers the user's context. Restores missing coverage guidance without the
+  earlier unsupported blanket claims about no scaling or the fallback colour
+  matching the app background. This published guidance was not retested on
+  iOS 26 in this revision.
+- **Joe Bell — startup-theme investigation (2026-09-15, editorial review)** —
+  this repository's startup reference — appearance-aware image/link counts,
+  neutral artwork tradeoff, preserving existing light/dark sets by default,
+  starting new artwork with a neutral set unless the product requires matching
+  installation appearance, and the unexecuted installation/refresh test plan.
+  Production feedback reports a dark-installed splash remaining dark after a
+  system switch to light and refreshing on reinstall. Exact OS/Safari build
+  was not supplied, so this is not promoted as a new device-verified finding.
+  No new Simulator or hardware tests ran for this revision. Script timing,
+  manifest/reload/URL invalidation and OS-update behavior remain unverified.

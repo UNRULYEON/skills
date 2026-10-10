@@ -3,7 +3,7 @@ provider: joe-bell
 local_name: apple-web-app
 upstream_repo: joe-bell/skills
 upstream_path: skills/apple-web-app
-pinned_ref: 14076bfe7c7c0c6260980f581e2657b4ec9c6e44
+pinned_ref: 2eb6b5da2ff003abf428255599d002047312b815
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync apple-web-app --write`.
 
 - Source repo: [joe-bell/skills](https://github.com/joe-bell/skills)
 - Source path: `skills/apple-web-app`
-- Pinned commit: [`14076bfe7c7c0c6260980f581e2657b4ec9c6e44`](https://github.com/joe-bell/skills/commit/14076bfe7c7c0c6260980f581e2657b4ec9c6e44)
+- Pinned commit: [`2eb6b5da2ff003abf428255599d002047312b815`](https://github.com/joe-bell/skills/commit/2eb6b5da2ff003abf428255599d002047312b815)
 - Update policy: latest
