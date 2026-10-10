@@ -15,7 +15,7 @@ bun <this skill's folder>/scripts/index.ts <take-file> --rehearse
 
 ## Steps
 
-1. **Find the take.** Search the project for a `takes/` folder. Put a new take there, or in `takes/` at the project root when there is none. Read one take that is there before you write a new one: it shows the pace the user likes.
+1. **Find the take.** For a take that the user names, search the project for a `takes/` folder. Write a new take in a temp folder: your scratchpad when the session has one, `$TMPDIR/record-take/` when it has none. Put it in the project only when the user asks for that, and then in the `takes/` folder that is there, or in `takes/` at the project root. Give the user the path of a new take. When the project has takes, read one before you write a new one: it shows the pace the user likes.
 2. **Write or change the take.** [`TAKES.md`](TAKES.md) has every field, step and target. Read it before you write a step.
 3. **Tell the user that the run starts**, and that it takes control of the pointer and the keyboard until it ends. A touch on the mouse or a key during the run breaks the take.
 4. **Rehearse** until the run prints its last step and exits with code 0. The runner prints each step as `n/total` before it does the step, so the last printed line shows where a failure is.
