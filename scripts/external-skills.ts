@@ -460,7 +460,7 @@ async function addEntry(rawArgs: string[]): Promise<void> {
       message: "Upstream repo (owner/repo) or a GitHub skill URL",
       validate: (v) => (v?.trim() ? undefined : "Required"),
     });
-    if (clack.isCancel(answer)) throw new Error("Cancelled.");
+    if (typeof answer !== "string") throw new Error("Cancelled.");
     const parsed = parseGithubSkillUrl(answer);
     repo = parsed?.repo ?? answer.trim();
     path ??= parsed?.path;
@@ -473,7 +473,7 @@ async function addEntry(rawArgs: string[]): Promise<void> {
       message: `Path within ${repo} (e.g. skills/productivity/writing-for-agents)`,
       validate: (v) => (v?.trim() ? undefined : "Required"),
     });
-    if (clack.isCancel(answer)) throw new Error("Cancelled.");
+    if (typeof answer !== "string") throw new Error("Cancelled.");
     path = answer.trim();
   }
 
@@ -565,7 +565,7 @@ async function addEntry(rawArgs: string[]): Promise<void> {
 
 async function promptText(message: string, defaultValue: string): Promise<string | undefined> {
   const answer = await clack.text({ message, placeholder: defaultValue, defaultValue });
-  if (clack.isCancel(answer)) throw new Error("Cancelled.");
+  if (typeof answer !== "string") throw new Error("Cancelled.");
   return answer || defaultValue;
 }
 
