@@ -3,7 +3,7 @@ provider: mattpocock
 local_name: writing-for-agents
 upstream_repo: mattpocock/skills
 upstream_path: skills/productivity/writing-for-agents
-pinned_ref: 4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+pinned_ref: 49dd158d1076134a641b33efb035946536778336
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync writing-for-agents --write`.
 
 - Source repo: [mattpocock/skills](https://github.com/mattpocock/skills)
 - Source path: `skills/productivity/writing-for-agents`
-- Pinned commit: [`4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d`](https://github.com/mattpocock/skills/commit/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d)
+- Pinned commit: [`49dd158d1076134a641b33efb035946536778336`](https://github.com/mattpocock/skills/commit/49dd158d1076134a641b33efb035946536778336)
 - Update policy: latest
