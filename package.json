@@ -9,7 +9,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@clack/prompts": "^1.8.0",
+    "@clack/prompts": "^1.8.1",
     "ora": "^9.4.1",
     "picocolors": "^1.1.1",
     "yaml": "^2.9.1"
@@ -17,8 +17,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@typescript/native-preview": "^7.0.0-dev.20260707.2",
-    "oxfmt": "^0.67.0",
-    "oxlint": "^1.82.0",
+    "oxfmt": "^0.72.0",
+    "oxlint": "^1.87.0",
     "typescript": "^7.0.2"
   },
   "engines": {
