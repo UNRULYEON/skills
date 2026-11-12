@@ -47,7 +47,7 @@ jobs:
       # previous run gets overwritten with this run's diff instead of a new
       # PR being opened alongside it.
       - name: Open or update the pull request with this run's changes
-        uses: peter-evans/create-pull-request@v8.1.1
+        uses: peter-evans/create-pull-request@v8.1.2
         with:
           commit-message: "chore: sync external skills"
           title: "chore: sync external skills"
