@@ -11,3 +11,10 @@ skills:
     update_policy: latest
     status: active
     owner: amar
+  - local_name: pr
+    upstream_repo: mattpocock/skills
+    upstream_path: skills/engineering/pr
+    pinned_ref: 5863806dd4e15c63174bee4e7515a4256792ecfa
+    update_policy: latest
+    status: active
+    owner: amar
