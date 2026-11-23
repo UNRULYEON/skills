@@ -3,7 +3,7 @@ provider: mattpocock
 local_name: pr
 upstream_repo: mattpocock/skills
 upstream_path: skills/engineering/pr
-pinned_ref: 5863806dd4e15c63174bee4e7515a4256792ecfa
+pinned_ref: abeeaf95660ba9e8b7c753eb38f441ca707a8823
 update_policy: latest
 status: active
 owner: amar
@@ -17,5 +17,5 @@ and re-run `bun scripts/external-skills.ts sync pr --write`.
 
 - Source repo: [mattpocock/skills](https://github.com/mattpocock/skills)
 - Source path: `skills/engineering/pr`
-- Pinned commit: [`5863806dd4e15c63174bee4e7515a4256792ecfa`](https://github.com/mattpocock/skills/commit/5863806dd4e15c63174bee4e7515a4256792ecfa)
+- Pinned commit: [`abeeaf95660ba9e8b7c753eb38f441ca707a8823`](https://github.com/mattpocock/skills/commit/abeeaf95660ba9e8b7c753eb38f441ca707a8823)
 - Update policy: latest
